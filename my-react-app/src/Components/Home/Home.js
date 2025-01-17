@@ -1,6 +1,5 @@
 // src/Home.js
 import React from "react";
-import { Link } from "react-router-dom";
 import Image1 from "../../Assets/Hero Slide/Slide 1.jpg";
 import Image2 from "../../Assets/Hero Slide/Slide 2.jpg";
 import Image3 from "../../Assets/Hero Slide/Slide 3.jpg";

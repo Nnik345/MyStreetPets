@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import Header from "./Components/Header/Header"; // Import Header component
 import Footer from "./Components/Footer/Footer"; // Import Footer component
 import Home from "./Components/Home/Home"; // Import Home component
-import StreetDogs from "./Components/StreetDogs/StreetDogs";
-import AdoptionDogs from "./Components/AdoptionDogs/AdoptionDogs";
+import StreetAnimals from "./Components/StreetAnimals/StreetAnimals";
+import AdoptionAnimals from "./Components/AdoptionAnimals/AdoptionAnimals";
 
 const App = () => {
   return (
@@ -18,8 +18,8 @@ const App = () => {
           <Routes>
             {/* Homepage Route */}
             <Route path="/" element={<Home />} />
-            <Route path="/street-dogs" element={<StreetDogs />} />
-            <Route path="/adoption-dogs" element={<AdoptionDogs />} />
+            <Route path="/street-animals" element={<StreetAnimals />} />
+            <Route path="/adoption-animals" element={<AdoptionAnimals />} />
             {/* Add more routes here as you add pages */}
           </Routes>
         </div>

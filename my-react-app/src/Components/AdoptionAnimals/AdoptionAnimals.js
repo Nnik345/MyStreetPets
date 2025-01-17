@@ -1,38 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { fetchDogs } from "../../Utils/fetchStreetDogs";
+import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
 
-const StreetDogs = () => {
-  const [dogs, setDogs] = useState([]);
+const AdoptionAnimals = () => {
+  const [animals, setAnimals] = useState([]);
 
   useEffect(() => {
     // Fetch data on component mount
-    const getDogs = async () => {
-      const data = await fetchDogs();
-      setDogs(data);
+    const getAnimals = async () => {
+      const data = await fetchAnimals();
+      setAnimals(data);
     };
-    getDogs();
+    getAnimals();
   }, []);
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center">Street Dogs</h2>
+      <h2 className="text-center">Animals Up For Adoption</h2>
       <div className="row g-3">
-        {dogs.map((dog) => (
+        {animals.map((animals) => (
           <div
-            key={dog._id}
+            key={animals._id}
             className="col-sm-6 col-md-4 col-lg-3"
-            onClick={() => alert(`You clicked on ${dog.name}`)}
+            onClick={() => alert(`You clicked on ${animals.name}`)}
             style={{ cursor: "pointer" }}
           >
             <div className="card">
               <img
-                src={dog.image}
-                alt={dog.name}
+                src={animals.image}
+                alt={animals.name}
                 className="card-img-top"
                 style={{ objectFit: "cover", height: "200px" }}
               />
               <div className="card-body text-center">
-                <h5 className="card-title">{dog.name}</h5>
+                <h5 className="card-title">{animals.name}</h5>
               </div>
             </div>
           </div>
@@ -42,4 +42,4 @@ const StreetDogs = () => {
   );
 };
 
-export default StreetDogs;
+export default AdoptionAnimals;

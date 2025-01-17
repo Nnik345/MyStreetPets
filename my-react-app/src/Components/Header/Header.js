@@ -30,10 +30,10 @@ const Header = () => {
                   <a className="nav-link text-white" href="#">About</a>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link text-white" to="/street-dogs">Street Dogs</Link>
+                <Link className="nav-link text-white" to="/street-animals">Street Animals</Link>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link text-white" to="/adoption-dogs">Adoption</Link>
+                <Link className="nav-link text-white" to="/adoption-animals">Adoption</Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-white" href="#">Contact</a>
