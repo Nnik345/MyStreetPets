@@ -17,8 +17,8 @@ app.use(express.json());
 // Connect to databases
 (async () => {
   try {
-    const streetDogsConnection = await createConnection(streetDogsDB); // Connect to streetDogs
-    const adoptionDogsConnection = await createConnection(adoptionDogsDB); // Connect to adoptionDogs
+    const streetDogsConnection = await createConnection(streetDogsDB);
+    const adoptionDogsConnection = await createConnection(adoptionDogsDB);
 
     // Pass the connections to routes via middleware
     app.use('/api/street-dogs', (req, res, next) => {
