@@ -1,5 +1,6 @@
 require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
+const cors = require('cors'); // Import cors package
 const createConnection = require('./dbConnect');
 const streetDogsRoutes = require('./api/streetDogs');
 const adoptionDogsRoutes = require('./api/adoptionDogs');
@@ -13,6 +14,11 @@ const adoptionDogsDB = process.env.ADOPTION_DOGS_URI;
 
 // Middleware
 app.use(express.json());
+
+// Enable CORS for all origins
+app.use(cors({
+  origin: '*' // Allow requests from any origin
+}));
 
 // Connect to databases
 (async () => {
