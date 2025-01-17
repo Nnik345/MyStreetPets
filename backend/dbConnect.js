@@ -1,4 +1,3 @@
-// dbConnect.js
 const mongoose = require('mongoose');
 
 // Function to create a new connection
@@ -8,7 +7,7 @@ const createConnection = async (uri) => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`Connected to MongoDB: ${uri}`);
+    console.log(`Connected to MongoDB: ${uri.split('@')[1]}`); // Hide username/password in logs
     return connection;
   } catch (error) {
     console.error("MongoDB connection error:", error);
