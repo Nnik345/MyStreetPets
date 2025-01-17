@@ -15,7 +15,7 @@ const dogListSchema = new mongoose.Schema({
 router.get('/', async (req, res) => {
   try {
     // Use the connection from req.dbConnection
-    const DogList = req.dbConnection.model('DogList', dogListSchema, 'dogList'); // Collection: dogList
+    const DogList = req.dbConnection.model('DogList', dogListSchema, 'dogList');
     const dogList = await DogList.find({});
     res.json(dogList);
   } catch (error) {

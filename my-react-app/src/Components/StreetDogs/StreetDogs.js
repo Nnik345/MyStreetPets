@@ -19,7 +19,7 @@ const StreetDogs = () => {
       <div className="row g-3">
         {dogs.map((dog) => (
           <div
-            key={dog.id}
+            key={dog._id}
             className="col-sm-6 col-md-4 col-lg-3"
             onClick={() => alert(`You clicked on ${dog.name}`)}
             style={{ cursor: "pointer" }}
