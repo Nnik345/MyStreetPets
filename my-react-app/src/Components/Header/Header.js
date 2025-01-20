@@ -1,8 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import logo from "../../Assets/Logo/Logo.jpg";
+import { useAuth } from "react-oidc-context";
 
 const Header = () => {
+  const auth = useAuth();
+
+  const signoutRedirect = () => {
+    const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
+    const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
+    const cognitoDomain = "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+    auth.removeUser();
+  }
+
+  const handleAuthAction = () => {
+    if (auth.isAuthenticated) {
+      signoutRedirect();
+    } else {
+      auth.signinRedirect();
+    }
+  };
+
   return (
     <header className="bg-dark text-white pt-0">
       <div className="container-fluid">
@@ -18,6 +37,14 @@ const Header = () => {
           <div className="col text-center">
             <h1>My Street Pets</h1>
           </div>
+          <div className="col-auto ml-auto">
+            <button
+              className="btn btn-outline-light"
+              onClick={handleAuthAction}
+            >
+              {auth.isAuthenticated ? "Sign Out" : "Sign In"}
+            </button>
+          </div>
         </div>
         <div className="row">
           <div className="col-12">
@@ -30,10 +57,10 @@ const Header = () => {
                   <a className="nav-link text-white" href="#">About</a>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link text-white" to="/street-animals">Street Animals</Link>
+                  <Link className="nav-link text-white" to="/street-animals">Street Animals</Link>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link text-white" to="/adoption-animals">Adoption</Link>
+                  <Link className="nav-link text-white" to="/adoption-animals">Adoption</Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-white" href="#">Contact</a>
