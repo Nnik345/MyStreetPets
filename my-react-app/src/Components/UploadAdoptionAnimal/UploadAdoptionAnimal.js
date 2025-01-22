@@ -5,6 +5,7 @@ import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMon
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
+  const [species, setSpecies] = useState('');
   const [breed, setBreed] = useState('');
   const [regionCode, setRegionCode] = useState('+91'); // Default region code
   const [contact, setContact] = useState('');
@@ -19,17 +20,18 @@ const UploadAdoptionAnimal = () => {
   };
 
   const handleUpload = async () => {
-    if (name && image && breed && contact && gender && neuterStatus && vaccinationStatus && age && location) {
+    if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && location) {
       try {
         const imageurl = await uploadAdoptionAnimal(image);
         const animalData = {
           name,
           image : imageurl,
+          species,
           breed,
-          contactDetails: `${regionCode} ${contact}`,
+          contactDetails : `${regionCode} ${contact}`,
           gender,
-          neuterStatus,
-          vaccinationStatus,
+          neuterStatus : neuterStatus === 'true',
+          vaccinationStatus : vaccinationStatus === 'true',
           age,
           location,
         };
@@ -69,6 +71,18 @@ const UploadAdoptionAnimal = () => {
           id="image"
           accept="image/*"
           onChange={handleImageChange}
+        />
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="species" className="form-label">Species:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="species"
+          value={species}
+          onChange={(e) => setSpecies(e.target.value)}
+          placeholder="Enter animal species"
         />
       </div>
 
@@ -128,7 +142,7 @@ const UploadAdoptionAnimal = () => {
         <select
           className="form-select"
           value={neuterStatus}
-          onChange={(e) => setNeuterStatus(e.target.value === 'true')}
+          onChange={(e) => setNeuterStatus(e.target.value)}
         >
           <option value="">Select Neuter Status</option>
           <option value="true">Neutered</option>
@@ -141,7 +155,7 @@ const UploadAdoptionAnimal = () => {
         <select
           className="form-select"
           value={vaccinationStatus}
-          onChange={(e) => setVaccinationStatus(e.target.value === 'true')}
+          onChange={(e) => setVaccinationStatus(e.target.value)}
         >
           <option value="">Select Vaccination Status</option>
           <option value="true">Vaccinated</option>
@@ -163,14 +177,18 @@ const UploadAdoptionAnimal = () => {
 
       <div className="mb-3">
         <label htmlFor="location" className="form-label">Location (City):</label>
-        <input
-          type="text"
-          className="form-control"
+        <select
+          className="form-select"
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="Enter city"
-        />
+        >
+          <option value="">Select City</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Madurai">Madurai</option>
+          <option value="Salem">Salem</option>
+          {/* Add more cities as needed */}
+        </select>
       </div>
 
       <button className="btn btn-primary w-100" onClick={handleUpload}>
