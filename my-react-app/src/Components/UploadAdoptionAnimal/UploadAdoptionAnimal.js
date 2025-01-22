@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal'; // Importing the uploadAdoptionAnimal function
+import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 
 const UploadAdoptionAnimal = () => {
@@ -7,13 +7,14 @@ const UploadAdoptionAnimal = () => {
   const [image, setImage] = useState(null);
   const [species, setSpecies] = useState('');
   const [breed, setBreed] = useState('');
-  const [regionCode, setRegionCode] = useState('+91'); // Default region code
+  const [regionCode, setRegionCode] = useState('+91');
   const [contact, setContact] = useState('');
   const [gender, setGender] = useState('');
   const [neuterStatus, setNeuterStatus] = useState('');
   const [vaccinationStatus, setVaccinationStatus] = useState('');
   const [age, setAge] = useState('');
   const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(false); // New loading state
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -21,17 +22,18 @@ const UploadAdoptionAnimal = () => {
 
   const handleUpload = async () => {
     if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && location) {
+      setLoading(true); // Set loading to true when upload starts
       try {
         const imageurl = await uploadAdoptionAnimal(image);
         const animalData = {
           name,
-          image : imageurl,
+          image: imageurl,
           species,
           breed,
-          contactDetails : `${regionCode} ${contact}`,
+          contactDetails: `${regionCode} ${contact}`,
           gender,
-          neuterStatus : neuterStatus === 'true',
-          vaccinationStatus : vaccinationStatus === 'true',
+          neuterStatus: neuterStatus === 'true',
+          vaccinationStatus: vaccinationStatus === 'true',
           age,
           location,
         };
@@ -41,6 +43,8 @@ const UploadAdoptionAnimal = () => {
       } catch (error) {
         console.error('Error uploading animal:', error);
         alert('Failed to upload animal. Please try again.');
+      } finally {
+        setLoading(false); // Reset loading state after upload is complete
       }
     } else {
       alert('Please fill out all fields.');
@@ -48,8 +52,20 @@ const UploadAdoptionAnimal = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 position-relative">
       <h2 className="text-center mb-4">Upload New Animal</h2>
+
+      {/* Loading Circle */}
+      {loading && (
+        <div className="position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center">
+          <div className="spinner-border text-primary" role="status"></div>
+        </div>
+      )}
+
+      {/* Backdrop for grayed-out effect */}
+      {loading && (
+        <div className="position-absolute top-0 start-0 w-100 h-100 bg-secondary opacity-50" style={{ zIndex: -1 }}></div>
+      )}
 
       <div className="mb-3">
         <label htmlFor="name" className="form-label">Name:</label>
@@ -60,6 +76,7 @@ const UploadAdoptionAnimal = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Enter animal name"
+          disabled={loading} // Disable inputs when uploading
         />
       </div>
 
@@ -71,6 +88,7 @@ const UploadAdoptionAnimal = () => {
           id="image"
           accept="image/*"
           onChange={handleImageChange}
+          disabled={loading} // Disable inputs when uploading
         />
       </div>
 
@@ -83,6 +101,7 @@ const UploadAdoptionAnimal = () => {
           value={species}
           onChange={(e) => setSpecies(e.target.value)}
           placeholder="Enter animal species"
+          disabled={loading}
         />
       </div>
 
@@ -95,6 +114,7 @@ const UploadAdoptionAnimal = () => {
           value={breed}
           onChange={(e) => setBreed(e.target.value)}
           placeholder="Enter animal breed"
+          disabled={loading}
         />
       </div>
 
@@ -106,12 +126,12 @@ const UploadAdoptionAnimal = () => {
             style={{ width: 'auto' }}
             value={regionCode}
             onChange={(e) => setRegionCode(e.target.value)}
+            disabled={loading}
           >
             <option value="+91">India (+91)</option>
             <option value="+1">USA (+1)</option>
             <option value="+44">UK (+44)</option>
             <option value="+61">Australia (+61)</option>
-            {/* Add more region codes as needed */}
           </select>
           <input
             type="tel"
@@ -120,6 +140,7 @@ const UploadAdoptionAnimal = () => {
             value={contact}
             onChange={(e) => setContact(e.target.value)}
             placeholder="Enter phone number"
+            disabled={loading}
           />
         </div>
       </div>
@@ -130,6 +151,7 @@ const UploadAdoptionAnimal = () => {
           className="form-select"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
+          disabled={loading}
         >
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
@@ -143,6 +165,7 @@ const UploadAdoptionAnimal = () => {
           className="form-select"
           value={neuterStatus}
           onChange={(e) => setNeuterStatus(e.target.value)}
+          disabled={loading}
         >
           <option value="">Select Neuter Status</option>
           <option value="true">Neutered</option>
@@ -156,6 +179,7 @@ const UploadAdoptionAnimal = () => {
           className="form-select"
           value={vaccinationStatus}
           onChange={(e) => setVaccinationStatus(e.target.value)}
+          disabled={loading}
         >
           <option value="">Select Vaccination Status</option>
           <option value="true">Vaccinated</option>
@@ -172,6 +196,7 @@ const UploadAdoptionAnimal = () => {
           value={age}
           onChange={(e) => setAge(e.target.value)}
           placeholder="Enter animal age (e.g., 2 years)"
+          disabled={loading}
         />
       </div>
 
@@ -182,16 +207,16 @@ const UploadAdoptionAnimal = () => {
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
+          disabled={loading}
         >
           <option value="">Select City</option>
           <option value="Chennai">Chennai</option>
           <option value="Madurai">Madurai</option>
           <option value="Salem">Salem</option>
-          {/* Add more cities as needed */}
         </select>
       </div>
 
-      <button className="btn btn-primary w-100" onClick={handleUpload}>
+      <button className="btn btn-primary w-100" onClick={handleUpload} disabled={loading}>
         Upload
       </button>
     </div>
