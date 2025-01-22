@@ -21,7 +21,13 @@ export const uploadAdoptionAnimal = async (file) => {
           });
   
           if (response.ok) {
-            resolve("File uploaded successfully");
+            const responseData = await response.json();
+            if (responseData.fileName) {
+              const responseUrl = `https://my-street-pets.s3.ap-south-1.amazonaws.com/Adoption+Animals/${responseData.fileName}`;
+              resolve(responseUrl);
+            } else {
+              reject("File uploaded, but response did not contain a fileName");
+            }
           } else {
             reject("Failed to upload file");
           }
