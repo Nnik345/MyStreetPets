@@ -6,6 +6,7 @@ import Footer from "./Components/Footer/Footer"; // Import Footer component
 import Home from "./Components/Home/Home"; // Import Home component
 import StreetAnimals from "./Components/StreetAnimals/StreetAnimals"; // Import StreetAnimals component
 import AdoptionAnimals from "./Components/AdoptionAnimals/AdoptionAnimals"; // Import AdoptionAnimals component
+import UploadAdoptionAnimal from "./Components/UploadAdoptionAnimal/UploadAdoptionAnimal";
 import DetailAnimal from "./Components/DetailAnimal/DetailAnimal"; // Import DetailAnimal component
 
 const App = () => {
@@ -23,6 +24,8 @@ const App = () => {
             <Route path="/street-animals" element={<StreetAnimals />} />
             {/* Adoption Animals Page */}
             <Route path="/adoption-animals" element={<AdoptionAnimals />} />
+            {/* Add Adoption Animals Page */}
+            <Route path="/upload-adoption-animal" element={<UploadAdoptionAnimal/>} />
             {/* Detail Animal Page */}
             <Route path="/animal/:id" element={<DetailAnimal />} />
           </Routes>
