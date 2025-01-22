@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal'; // Importing the uploadAdoptionAnimal function
-import uploadAdoptionAnimalMongo from '../../Utils/uploadAdoptionAnimalToMongo';
+import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
