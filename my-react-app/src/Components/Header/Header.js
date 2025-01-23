@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../../Assets/Logo/Logo.jpg";
 import { useAuth } from "react-oidc-context";
 
@@ -12,20 +12,13 @@ const Header = () => {
     const cognitoDomain = "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
     auth.removeUser();
-  }
-
-  const handleAuthAction = () => {
-    if (auth.isAuthenticated) {
-      signoutRedirect();
-    } else {
-      auth.signinRedirect();
-    }
   };
 
   return (
     <header className="bg-dark text-white pt-0">
       <div className="container-fluid">
         <div className="row align-items-center w-100">
+          {/* Logo Section */}
           <div className="col-auto p-0">
             <img
               src={logo}
@@ -34,18 +27,45 @@ const Header = () => {
               style={{ height: "50px", objectFit: "contain" }}
             />
           </div>
+
+          {/* Title Section */}
           <div className="col text-center">
             <h1>My Street Pets</h1>
           </div>
+
+          {/* Authentication Section */}
           <div className="col-auto ml-auto">
-            <button
-              className="btn btn-outline-light"
-              onClick={handleAuthAction}
-            >
-              {auth.isAuthenticated ? "Sign Out" : "Sign In"}
-            </button>
+            {auth.isAuthenticated ? (
+              <div className="dropdown">
+                <button
+                  className="btn btn-outline-light dropdown-toggle"
+                  type="button"
+                  id="userDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {auth.user?.profile?.name || "User"}
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <button className="dropdown-item" onClick={signoutRedirect}>
+                      Sign Out
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <button
+                className="btn btn-outline-light"
+                onClick={auth.signinRedirect}
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Navigation Section */}
         <div className="row">
           <div className="col-12">
             <nav>
