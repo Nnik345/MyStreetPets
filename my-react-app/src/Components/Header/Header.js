@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../Assets/Logo/Logo.jpg";
 import { useAuth } from "react-oidc-context";
@@ -44,7 +43,7 @@ const Header = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {auth.user?.profile?.name || "User"}
+                  {auth.user?.profile?.nickname || "User"}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
