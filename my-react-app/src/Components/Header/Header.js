@@ -1,12 +1,30 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../Assets/Logo/Logo.jpg";
 import { useAuth } from "react-oidc-context";
+import { CognitoIdentityProviderClient, GetUserCommand } from "@aws-sdk/client-cognito-identity-provider";
 
 const Header = () => {
   const auth = useAuth();
+  const [userAttributes, setUserAttributes] = useState(null);
+
+  const fetchUserAttributes = async () => {
+    const accessToken = auth.user?.access_token;
+    try {
+      const client = new CognitoIdentityProviderClient({region: "ap-south-1"});
+
+      const command = new GetUserCommand({ AccessToken: accessToken });
+      const response = await client.send(command);
+
+      setUserAttributes(response.UserAttributes);
+    } catch (err) {
+      console.error("Error fetching user attributes:", err);
+    }
+  }
 
   const signoutRedirect = () => {
-    console.log(auth);
+    fetchUserAttributes();
+    console.log(userAttributes);
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
     const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
     const cognitoDomain = "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
