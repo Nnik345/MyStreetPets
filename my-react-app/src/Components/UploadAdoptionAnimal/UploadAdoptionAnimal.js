@@ -165,14 +165,14 @@ const UploadAdoptionAnimal = () => {
     }
   };
 
-  /*if (!isAdmin) {
+  if (!isAdmin) {
     return (
       <div className="container mt-5">
         <h2 className="text-center text-danger">Access Not Allowed</h2>
         <p className="text-center">You must be an Admin to access this page.</p>
       </div>
     );
-  }*/
+  }
 
   return (
     <div className="container mt-5 position-relative">
