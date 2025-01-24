@@ -39,12 +39,12 @@ const DetailAnimal = () => {
 
         <div className="col-12">
           <h5>Vaccination Status</h5>
-          <p>{animal.vaccinationStatus}</p>
+          <p>{animal.vaccinationStatus ? 'Vaccinated' : 'Not Vaccinated'}</p>
         </div>
 
         <div className="col-12">
           <h5>Neuter Status</h5>
-          <p>{animal.neuterStatus}</p>
+          <p>{animal.neuterStatus ? 'Neutered' : 'Not Neutered'}</p>
         </div>
 
 

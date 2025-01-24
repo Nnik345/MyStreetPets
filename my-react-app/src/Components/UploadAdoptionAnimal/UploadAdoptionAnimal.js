@@ -145,6 +145,7 @@ const UploadAdoptionAnimal = () => {
           image: imageurl,
           species,
           breed,
+          about,
           contactDetails: `${regionCode} ${contact}`,
           gender,
           neuterStatus: neuterStatus === 'true',
