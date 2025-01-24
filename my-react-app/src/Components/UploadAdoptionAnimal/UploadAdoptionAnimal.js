@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { csv } from "d3";
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 import { useAuth } from 'react-oidc-context';
@@ -14,8 +15,86 @@ const UploadAdoptionAnimal = () => {
   const [neuterStatus, setNeuterStatus] = useState('');
   const [vaccinationStatus, setVaccinationStatus] = useState('');
   const [age, setAge] = useState('');
-  const [location, setLocation] = useState('');
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const countriesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/countries.csv`;
+  const statesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/states.csv`;
+  const citiesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/cities.csv`;
+
+  useEffect(() => {
+    // Load and parse the countries.csv
+    const loadCountries = async () => {
+      try {
+        const countriesData = await csv(countriesCsvPath);
+        setCountries(
+          countriesData.map((country) => ({
+            value: country.iso2,
+            label: country.name,
+          }))
+        );
+      } catch (error) {
+        console.error("Error loading countries:", error);
+      }
+    };
+    loadCountries();
+  }, [countriesCsvPath]);
+
+  useEffect(() => {
+    // Load and filter states.csv when the country changes
+    const loadStates = async () => {
+      if (country) {
+        try {
+          const statesData = await csv(statesCsvPath);
+          const filteredStates = statesData.filter(
+            (state) => state.country_code === country
+          );
+          setStates(
+            filteredStates.map((state) => ({
+              value: state.state_code, // Use state_code here
+              label: state.name,
+            }))
+          );
+          setState(""); // Reset state and city
+          setCity("");
+          setCities([]);
+        } catch (error) {
+          console.error("Error loading states:", error);
+        }
+      }
+    };
+    loadStates();
+  }, [country, statesCsvPath]);
+
+  useEffect(() => {
+    // Load and filter cities.csv when the state changes
+    const loadCities = async () => {
+      if (country && state) {
+        try {
+          const citiesData = await csv(citiesCsvPath);
+          const filteredCities = citiesData.filter(
+            (city) =>
+              city.country_code === country && city.state_code === state
+          );
+          setCities(
+            filteredCities.map((city) => ({
+              value: city.name,
+              label: city.name,
+            }))
+          );
+          setCity(""); // Reset city on state change
+        } catch (error) {
+          console.error("Error loading cities:", error);
+        }
+      }
+    };
+    loadCities();
+  }, [country, state, citiesCsvPath]);
 
   const auth = useAuth();
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
@@ -30,7 +109,7 @@ const UploadAdoptionAnimal = () => {
       return;
     }
     
-    if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && location) {
+    if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && country && state && city) {
       setLoading(true); // Set loading to true when upload starts
       try {
         const imageurl = await uploadAdoptionAnimal(image);
@@ -44,7 +123,9 @@ const UploadAdoptionAnimal = () => {
           neuterStatus: neuterStatus === 'true',
           vaccinationStatus: vaccinationStatus === 'true',
           age,
-          location,
+          country,
+          state,
+          city
         };
 
         await uploadAdoptionAnimalMongo(animalData);
@@ -219,18 +300,49 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="location" className="form-label">Location (City):</label>
+        <label htmlFor="country" className="form-label">Country:</label>
         <select
           className="form-select"
-          id="location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          disabled={loading}
+          id="country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        >
+          <option value="">Select Country</option>
+          {countries.map(c => (
+            <option key={c.value} value={c.value}>{c.label}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="state" className="form-label">State:</label>
+        <select
+          className="form-select"
+          id="state"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          disabled={!country}
+        >
+          <option value="">Select State</option>
+          {states.map(s => (
+            <option key={s.value} value={s.value}>{s.label}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="city" className="form-label">City:</label>
+        <select
+          className="form-select"
+          id="city"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          disabled={!state}
         >
           <option value="">Select City</option>
-          <option value="Chennai">Chennai</option>
-          <option value="Madurai">Madurai</option>
-          <option value="Salem">Salem</option>
+          {cities.map(ci => (
+            <option key={ci.value} value={ci.value}>{ci.label}</option>
+          ))}
         </select>
       </div>
 
@@ -242,3 +354,8 @@ const UploadAdoptionAnimal = () => {
 };
 
 export default UploadAdoptionAnimal;
+
+/*
+  + Make it so that location can be searched
+  + replace API Key (find a different api if the key is provided)
+*/
