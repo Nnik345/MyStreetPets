@@ -9,6 +9,7 @@ const UploadAdoptionAnimal = () => {
   const [image, setImage] = useState(null);
   const [species, setSpecies] = useState('');
   const [breed, setBreed] = useState('');
+  const [about, setAbout] = useState('');
   const [regionCode, setRegionCode] = useState('+91');
   const [contact, setContact] = useState('');
   const [gender, setGender] = useState('');
@@ -167,14 +168,14 @@ const UploadAdoptionAnimal = () => {
     }
   };
 
-  /*if (!isAdmin) {
+  if (!isAdmin) {
     return (
       <div className="container mt-5">
         <h2 className="text-center text-danger">Access Not Allowed</h2>
         <p className="text-center">You must be an Admin to access this page.</p>
       </div>
     );
-  }*/
+  }
 
   return (
     <div className="container mt-5 position-relative">
@@ -240,6 +241,19 @@ const UploadAdoptionAnimal = () => {
           onChange={(e) => setBreed(e.target.value)}
           placeholder="Enter animal breed"
           disabled={loading}
+        />
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="about" className="form-label">About:</label>
+        <textarea
+          className="form-control"
+          id="about"
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+          placeholder="Write something about the animal (e.g., temperament, behavior, special traits)"
+          disabled={loading}
+          rows={4} // Adjust the height of the textarea
         />
       </div>
 
