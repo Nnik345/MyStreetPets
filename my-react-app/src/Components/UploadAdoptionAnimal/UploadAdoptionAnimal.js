@@ -3,10 +3,6 @@ import { csv } from "d3";
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 import { useAuth } from 'react-oidc-context';
-import countriesCsvPath from '../../Assets/Location/countries.csv';
-import statesCsvPath from '../../Assets/Location/states.csv';
-import citiesCsvPath from '../../Assets/Location/cities.csv';
-import countryCodesCsvPath from '../../Assets/Phone/country-codes.csv'
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
@@ -28,12 +24,16 @@ const UploadAdoptionAnimal = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
+  const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
+  const citiesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv';
+  const countryCodesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/country-codes.csv'
+
   useEffect(() => {
     // Load and parse the country codes CSV
     const loadRegionCodes = async () => {
       try {
         const regionCodesData = await csv(countryCodesCsvPath);
-        console.log(regionCodesData);
         const filteredRegionCodes = regionCodesData.filter(
           (row) => row.Dial && row.official_name_en && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
         );
@@ -167,14 +167,14 @@ const UploadAdoptionAnimal = () => {
     }
   };
 
-  /*if (!isAdmin) {
+  if (!isAdmin) {
     return (
       <div className="container mt-5">
         <h2 className="text-center text-danger">Access Not Allowed</h2>
         <p className="text-center">You must be an Admin to access this page.</p>
       </div>
     );
-  }*/
+  }
 
   return (
     <div className="container mt-5 position-relative">
