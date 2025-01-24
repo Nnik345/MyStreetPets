@@ -35,13 +35,12 @@ const UploadAdoptionAnimal = () => {
       try {
         const regionCodesData = await csv(countryCodesCsvPath);
         const filteredRegionCodes = regionCodesData.filter(
-          (row) => row.Dial && row.official_name_en && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
+          (row) => row.Dial && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
         );
         setRegionCodes(
           filteredRegionCodes.map((row) => ({
             iso3: row['ISO3166-1-Alpha-3'],
             code: row.Dial,
-            country: row.official_name_en
           }))
         );
       } catch (error) {
@@ -255,7 +254,7 @@ const UploadAdoptionAnimal = () => {
           >
             {regionCodes.map((region) => (
               <option key={region.iso3} value={region.code}>
-                {region.country} (+{region.code})
+                {region.iso3} (+{region.code})
               </option>
             ))}
           </select>
