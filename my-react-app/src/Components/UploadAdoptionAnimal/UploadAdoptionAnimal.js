@@ -6,6 +6,7 @@ import { useAuth } from 'react-oidc-context';
 import countriesCsvPath from '../../Assets/Location/countries.csv';
 import statesCsvPath from '../../Assets/Location/states.csv';
 import citiesCsvPath from '../../Assets/Location/cities.csv';
+import countryCodesCsvPath from '../../Assets/Phone/country-codes.csv'
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
@@ -15,6 +16,7 @@ const UploadAdoptionAnimal = () => {
   const [regionCode, setRegionCode] = useState('+91');
   const [contact, setContact] = useState('');
   const [gender, setGender] = useState('');
+  const [regionCodes, setRegionCodes] = useState([]);
   const [neuterStatus, setNeuterStatus] = useState('');
   const [vaccinationStatus, setVaccinationStatus] = useState('');
   const [age, setAge] = useState('');
@@ -25,6 +27,27 @@ const UploadAdoptionAnimal = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Load and parse the country codes CSV
+    const loadRegionCodes = async () => {
+      try {
+        const regionCodesData = await csv(countryCodesCsvPath);
+        const filteredRegionCodes = regionCodesData.filter(
+          (row) => row.Dial && row.official_name_en // Filter out rows with empty values
+        );
+        setRegionCodes(
+          filteredRegionCodes.map((row) => ({
+            code: row.Dial,
+            country: row.official_name_en
+          }))
+        );
+      } catch (error) {
+        console.error('Error loading region codes:', error);
+      }
+    };
+    loadRegionCodes();
+  }, []);
 
   useEffect(() => {
     // Load and parse the countries.csv
@@ -142,14 +165,14 @@ const UploadAdoptionAnimal = () => {
     }
   };
 
-  if (!isAdmin) {
+  /*if (!isAdmin) {
     return (
       <div className="container mt-5">
         <h2 className="text-center text-danger">Access Not Allowed</h2>
         <p className="text-center">You must be an Admin to access this page.</p>
       </div>
     );
-  }
+  }*/
 
   return (
     <div className="container mt-5 position-relative">
@@ -228,10 +251,11 @@ const UploadAdoptionAnimal = () => {
             onChange={(e) => setRegionCode(e.target.value)}
             disabled={loading}
           >
-            <option value="+91">India (+91)</option>
-            <option value="+1">USA (+1)</option>
-            <option value="+44">UK (+44)</option>
-            <option value="+61">Australia (+61)</option>
+            {regionCodes.map((region) => (
+              <option key={region.code} value={region.code}>
+                {region.country} (+{region.code})
+              </option>
+            ))}
           </select>
           <input
             type="tel"
@@ -355,8 +379,3 @@ const UploadAdoptionAnimal = () => {
 };
 
 export default UploadAdoptionAnimal;
-
-/*
-  + Make it so that location can be searched
-  + replace API Key (find a different api if the key is provided)
-*/
