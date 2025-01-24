@@ -13,7 +13,7 @@ const Header = () => {
     auth.removeUser();
   };
 
-  const isAdmin = auth.user?.profile?.['cognito:groups']?.[0] === 'Admin';
+  const isAdmin = auth.user?.profile?.['cognito:groups']?.includes('Admin');
 
   return (
     <header className="bg-dark text-white pt-0">

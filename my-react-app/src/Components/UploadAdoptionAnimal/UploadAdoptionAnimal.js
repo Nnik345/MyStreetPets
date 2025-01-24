@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
+import { useAuth } from 'react-oidc-context';
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
@@ -14,13 +15,21 @@ const UploadAdoptionAnimal = () => {
   const [vaccinationStatus, setVaccinationStatus] = useState('');
   const [age, setAge] = useState('');
   const [location, setLocation] = useState('');
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
+
+  const auth = useAuth();
+  const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
   const handleUpload = async () => {
+    if (!isAdmin) {
+      alert("Access not allowed. Only Admin users can upload animals.");
+      return;
+    }
+    
     if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && location) {
       setLoading(true); // Set loading to true when upload starts
       try {
@@ -50,6 +59,15 @@ const UploadAdoptionAnimal = () => {
       alert('Please fill out all fields.');
     }
   };
+
+  if (!isAdmin) {
+    return (
+      <div className="container mt-5">
+        <h2 className="text-center text-danger">Access Not Allowed</h2>
+        <p className="text-center">You must be an Admin to access this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5 position-relative">
