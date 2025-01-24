@@ -3,6 +3,9 @@ import { csv } from "d3";
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 import { useAuth } from 'react-oidc-context';
+import countriesCsvPath from '../../Assets/Location/countries.csv';
+import statesCsvPath from '../../Assets/Location/states.csv';
+import citiesCsvPath from '../../Assets/Location/cities.csv';
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
@@ -23,10 +26,6 @@ const UploadAdoptionAnimal = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const countriesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/countries.csv`;
-  const statesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/states.csv`;
-  const citiesCsvPath = `${process.env.PUBLIC_URL}/Assets/Location/cities.csv`;
-
   useEffect(() => {
     // Load and parse the countries.csv
     const loadCountries = async () => {
@@ -39,11 +38,11 @@ const UploadAdoptionAnimal = () => {
           }))
         );
       } catch (error) {
-        console.error("Error loading countries:", error);
+        console.error('Error loading countries:', error);
       }
     };
     loadCountries();
-  }, [countriesCsvPath]);
+  }, []);
 
   useEffect(() => {
     // Load and filter states.csv when the country changes
@@ -69,7 +68,7 @@ const UploadAdoptionAnimal = () => {
       }
     };
     loadStates();
-  }, [country, statesCsvPath]);
+  }, [country]);
 
   useEffect(() => {
     // Load and filter cities.csv when the state changes
@@ -94,7 +93,7 @@ const UploadAdoptionAnimal = () => {
       }
     };
     loadCities();
-  }, [country, state, citiesCsvPath]);
+  }, [country, state]);
 
   const auth = useAuth();
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
@@ -113,6 +112,8 @@ const UploadAdoptionAnimal = () => {
       setLoading(true); // Set loading to true when upload starts
       try {
         const imageurl = await uploadAdoptionAnimal(image);
+        const selectedCountry = countries.find(c => c.value === country);
+        const selectedState = states.find(c => c.value === state);
         const animalData = {
           name,
           image: imageurl,
@@ -123,8 +124,8 @@ const UploadAdoptionAnimal = () => {
           neuterStatus: neuterStatus === 'true',
           vaccinationStatus: vaccinationStatus === 'true',
           age,
-          country,
-          state,
+          selectedCountry,
+          selectedState,
           city
         };
 
