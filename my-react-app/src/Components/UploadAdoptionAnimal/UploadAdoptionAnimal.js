@@ -165,7 +165,21 @@ const UploadAdoptionAnimal = () => {
         setLoading(false); // Reset loading state after upload is complete
       }
     } else {
-      alert('Please fill out all fields.');
+      const missingFields = [];
+      if (!name) missingFields.push('Name');
+      if (!image) missingFields.push('Image');
+      if (!breed) missingFields.push('Breed');
+      if (!species) missingFields.push('Species');
+      if (!contact) missingFields.push('Contact');
+      if (!gender) missingFields.push('Gender');
+      if (!neuterStatus) missingFields.push('Neuter Status');
+      if (!vaccinationStatus) missingFields.push('Vaccination Status');
+      if (!age) missingFields.push('Age');
+      if (!country) missingFields.push('Country');
+      if (!state) missingFields.push('State');
+      if (!city) missingFields.push('City');
+
+      alert(`Please fill out the following fields: ${missingFields.join(', ')}`);
     }
   };
 
