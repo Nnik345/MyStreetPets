@@ -137,8 +137,8 @@ const UploadAdoptionAnimal = () => {
       setLoading(true); // Set loading to true when upload starts
       try {
         const imageurl = await uploadAdoptionAnimal(image);
-        const selectedCountry = countries.find(c => c.value === country);
-        const selectedState = states.find(c => c.value === state);
+        const selectedCountry = countries.find(c => c.value === country).label;
+        const selectedState = states.find(c => c.value === state).label;
         const animalData = {
           name,
           image: imageurl,
