@@ -6,13 +6,6 @@ const DetailAnimal = () => {
   const { animal } = state; // Destructure animal data
 
   // Generate the "About" section text
-  const aboutText = `
-    Meet ${animal.name}, a beautiful ${animal.breed}. 
-    ${animal.gender === "Male" ? "He" : "She"} is ${
-    animal.vaccinationStatus ? "fully vaccinated" : "not yet vaccinated"
-  } and ${
-    animal.neuterStatus ? "neutered" : "not neutered"
-  }. A perfect companion for a loving home!`;
 
   return (
     <div className="container mt-4">
@@ -41,8 +34,19 @@ const DetailAnimal = () => {
         {/* About Section */}
         <div className="col-12 mb-4">
           <h4>About {animal.name}</h4>
-          <p>{aboutText}</p>
+          <p>{animal.about}</p>
         </div>
+
+        <div className="col-12">
+          <h5>Vaccination Status</h5>
+          <p>{animal.vaccinationStatus}</p>
+        </div>
+
+        <div className="col-12">
+          <h5>Neuter Status</h5>
+          <p>{animal.neuterStatus}</p>
+        </div>
+
 
         {/* Contact Details */}
         <div className="col-12">
