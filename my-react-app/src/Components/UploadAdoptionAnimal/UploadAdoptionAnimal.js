@@ -35,12 +35,13 @@ const UploadAdoptionAnimal = () => {
       try {
         const regionCodesData = await csv(countryCodesCsvPath);
         const filteredRegionCodes = regionCodesData.filter(
-          (row) => row.Dial && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
+          (row) => row.Dial && row.official_name_en && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
         );
         setRegionCodes(
           filteredRegionCodes.map((row) => ({
             iso3: row['ISO3166-1-Alpha-3'],
             code: row.Dial,
+            country: row.official_name_en
           }))
         );
       } catch (error) {
@@ -166,14 +167,14 @@ const UploadAdoptionAnimal = () => {
     }
   };
 
-  if (!isAdmin) {
+  /*if (!isAdmin) {
     return (
       <div className="container mt-5">
         <h2 className="text-center text-danger">Access Not Allowed</h2>
         <p className="text-center">You must be an Admin to access this page.</p>
       </div>
     );
-  }
+  }*/
 
   return (
     <div className="container mt-5 position-relative">
@@ -247,14 +248,14 @@ const UploadAdoptionAnimal = () => {
         <div className="d-flex">
           <select
             className="form-select me-2"
-            style={{ width: 'auto' }}
+            style={{ width: '20%' }}
             value={regionCode}
             onChange={(e) => setRegionCode(e.target.value)}
             disabled={loading}
           >
             {regionCodes.map((region) => (
               <option key={region.iso3} value={region.code}>
-                {region.iso3} (+{region.code})
+                {region.country} (+{region.code})
               </option>
             ))}
           </select>
