@@ -149,8 +149,8 @@ const UploadAdoptionAnimal = () => {
           neuterStatus: neuterStatus === 'true',
           vaccinationStatus: vaccinationStatus === 'true',
           age,
-          selectedCountry,
-          selectedState,
+          country: selectedCountry,
+          state: selectedState,
           city
         };
 
