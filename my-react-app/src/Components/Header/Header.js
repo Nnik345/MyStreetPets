@@ -6,13 +6,15 @@ const Header = () => {
   const auth = useAuth();
 
   const signoutRedirect = () => {
-    console.log(auth);
+    console.log(auth.user?.profile?.data['cognito:groups']);
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
     const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
     const cognitoDomain = "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
     auth.removeUser();
   };
+
+  const isAdmin = auth.user?.profile?.['cognito:groups']?.[0] === 'Admin';
 
   return (
     <header className="bg-dark text-white pt-0">
@@ -47,6 +49,13 @@ const Header = () => {
                   {auth.user?.profile?.nickname || "User"}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  {isAdmin && (
+                    <li>
+                      <Link className="dropdown-item" to="/upload-adoption-animal">
+                        Add Animal
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button className="dropdown-item" onClick={signoutRedirect}>
                       Sign Out
