@@ -33,6 +33,7 @@ const UploadAdoptionAnimal = () => {
     const loadRegionCodes = async () => {
       try {
         const regionCodesData = await csv(countryCodesCsvPath);
+        console.log(regionCodesData);
         const filteredRegionCodes = regionCodesData.filter(
           (row) => row.Dial && row.official_name_en && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
         );
