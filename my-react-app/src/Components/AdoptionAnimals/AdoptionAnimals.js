@@ -21,7 +21,6 @@ const AdoptionAnimals = () => {
   const [cities, setCities] = useState([]);
 
   const [isGeoLoaded, setIsGeoLoaded] = useState(false); // Track geolocation loading
-const [isGeoPermissionDenied, setIsGeoPermissionDenied] = useState(false);
 
   const [species, setSpecies] = useState("");
 
@@ -72,7 +71,6 @@ const [isGeoPermissionDenied, setIsGeoPermissionDenied] = useState(false);
           setIsGeoLoaded(true);
         },
         () => {
-          setIsGeoPermissionDenied(true); // User denied geolocation
           setIsGeoLoaded(true);
         }
       );
