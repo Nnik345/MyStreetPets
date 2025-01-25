@@ -57,8 +57,11 @@ const UploadAdoptionAnimal = () => {
     const loadCountries = async () => {
       try {
         const countriesData = await csv(countriesCsvPath);
+        const filterCountries = countriesData.filter(
+          (row) => row.iso2 && row.name
+        );
         setCountries(
-          countriesData.map((country) => ({
+          filterCountries.map((country) => ({
             value: country.iso2,
             label: country.name,
           }))
@@ -77,7 +80,7 @@ const UploadAdoptionAnimal = () => {
         try {
           const statesData = await csv(statesCsvPath);
           const filteredStates = statesData.filter(
-            (state) => state.country_code === country
+            (state) => (state.country_code === country) && state.state_code && state.name
           );
           setStates(
             filteredStates.map((state) => ({
@@ -235,15 +238,19 @@ const UploadAdoptionAnimal = () => {
 
       <div className="mb-3">
         <label htmlFor="species" className="form-label">Species:</label>
-        <input
-          type="text"
-          className="form-control"
+        <select
+          className="form-select"
           id="species"
           value={species}
           onChange={(e) => setSpecies(e.target.value)}
-          placeholder="Enter animal species"
           disabled={loading}
-        />
+        >
+          <option value="">Select a species</option>
+          <option value="Dog">Dog</option>
+          <option value="Cat">Cat</option>
+          <option value="Bird">Bird</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
       <div className="mb-3">
@@ -268,7 +275,7 @@ const UploadAdoptionAnimal = () => {
           onChange={(e) => setAbout(e.target.value)}
           placeholder="Write something about the animal (e.g., temperament, behavior, special traits)"
           disabled={loading}
-          rows={4} // Adjust the height of the textarea
+          rows={4}
         />
       </div>
 

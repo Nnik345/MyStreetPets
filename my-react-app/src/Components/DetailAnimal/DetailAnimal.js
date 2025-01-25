@@ -25,7 +25,7 @@ const DetailAnimal = () => {
           <h2>{animal.name}</h2>
           <p>
             <strong>Age:</strong> {animal.age} <br />
-            <strong>Location:</strong> {`${animal.city}, ${animal.state}, ${animal.city}`}
+            <strong>Location:</strong> {`${animal.city}, ${animal.state}, ${animal.country}`}
           </p>
         </div>
       </div>
