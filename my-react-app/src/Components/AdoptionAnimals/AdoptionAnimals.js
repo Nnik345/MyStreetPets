@@ -71,9 +71,8 @@ const AdoptionAnimals = () => {
         () => {
         }
       );
-    } else {
     }
-  }, [isDataLoaded, countries, states, cities]);
+  }, [countries, states, cities]);
 
   useEffect(() => {
     const loadCsvData = async () => {
