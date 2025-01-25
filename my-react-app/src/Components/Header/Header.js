@@ -78,21 +78,26 @@ const Header = () => {
           <div className="col-12">
             <nav>
               <ul className="nav d-flex justify-content-between">
+                {/* Home Option */}
                 <li className="nav-item">
-                  <Link className="nav-link text-white" to="/">Home</Link>
+                  <Link className="nav-link text-white fw-bold fs-4" to="/">
+                    Home
+                  </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link text-white" href="#">About</a>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-white" to="/street-animals">Street Animals</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-white" to="/adoption-animals">Adoption</Link>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link text-white" href="#">Contact</a>
-                </li>
+
+                {/* Other Options */}
+                <div className="ms-auto d-flex">
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/street-animals">
+                      Street Animals
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/adoption-animals">
+                      Adoption
+                    </Link>
+                  </li>
+                </div>
               </ul>
             </nav>
           </div>
