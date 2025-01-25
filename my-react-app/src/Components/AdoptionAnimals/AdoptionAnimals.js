@@ -21,6 +21,8 @@ const AdoptionAnimals = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
+  const [species, setSpecies] = useState("");
+
   const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
   const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
   const citiesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv';
@@ -203,6 +205,24 @@ const AdoptionAnimals = () => {
           </div>
         </div>
 
+        <div className="col-md-4 mb-4">
+          <label htmlFor="speciesSelect" className="form-label">
+            Species
+          </label>
+          <select
+            id="speciesSelect"
+            className="form-select"
+            value={species}
+            onChange={(e) => setSpecies(e.target.value)}
+          >
+            <option value="">Select Species</option>
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+            <option value="Bird">Bird</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
       <div className="row g-3">
         {location.country === "" ? (
           <div className="col-12 text-center">
@@ -213,7 +233,10 @@ const AdoptionAnimals = () => {
         ) : (animals.filter(animal => 
           (animal.country === countryName || location.country === "") &&
           (animal.state === stateName || location.state === "") &&
-          (animal.city === cityName || location.city === "" || (animal.state === stateName && cityName === "") || (animal.country === countryName && cityName === "" && stateName === "")))
+          (animal.city === cityName || location.city === "" ||
+            (animal.state === stateName && cityName === "") || 
+            (animal.country === countryName && cityName === "" && stateName === "")) &&
+          (animal.species === species || species === ""))
           .map((animal) => (
           <div
             key={animal._id}
