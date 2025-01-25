@@ -31,7 +31,7 @@ const Header = () => {
 
           {/* Title Section */}
           <div className="col text-center">
-            <h1>My Street Pets</h1>
+            <h1>MyStreetPets</h1>
           </div>
 
           {/* Authentication Section */}
