@@ -15,11 +15,13 @@ const AdoptionAnimals = () => {
   const [countryName, setCountryName] = useState("");
   const [stateName, setStateName] = useState("");
   const [cityName, setCityName] = useState("");
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+
+  const [isGeoLoaded, setIsGeoLoaded] = useState(false); // Track geolocation loading
+const [isGeoPermissionDenied, setIsGeoPermissionDenied] = useState(false);
 
   const [species, setSpecies] = useState("");
 
@@ -43,7 +45,7 @@ const AdoptionAnimals = () => {
   };
 
   useEffect(() => {
-    if ("geolocation" in navigator) {
+    if (!isGeoLoaded && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
@@ -67,8 +69,11 @@ const AdoptionAnimals = () => {
             state: state ? state.state_code : "",
             city: city ? city.name : "",
           });
+          setIsGeoLoaded(true);
         },
         () => {
+          setIsGeoPermissionDenied(true); // User denied geolocation
+          setIsGeoLoaded(true);
         }
       );
     }
@@ -90,8 +95,6 @@ const AdoptionAnimals = () => {
 
       const citiesData = await d3.csv(citiesCsvPath);
       setCities(citiesData);
-
-      setIsDataLoaded(true);
     };
     loadCsvData();
   }, []);
