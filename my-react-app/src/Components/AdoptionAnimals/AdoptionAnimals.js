@@ -24,6 +24,8 @@ const AdoptionAnimals = () => {
 
   const [species, setSpecies] = useState("");
 
+  const [showFilters, setShowFilters] = useState(false);
+
   const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
   const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
   const citiesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv';
@@ -39,12 +41,70 @@ const AdoptionAnimals = () => {
     getAnimals();
   }, []);
 
+  useEffect(() => {
+    const cachedCountry = localStorage.getItem("country"); // Default to India
+    const cachedState = localStorage.getItem("state") || "";
+    const cachedCity = localStorage.getItem("city") || "";
+  
+    setLocation({
+      country: cachedCountry,
+      state: cachedState,
+      city: cachedCity,
+    });
+  }, []);
+
   const handleCardClick = (animal) => {
     navigate(`/animal/${animal._id}`, { state: { animal } }); // Navigate with state
   };
 
   useEffect(() => {
-    if (!isGeoLoaded && "geolocation" in navigator) {
+    if (!isGeoLoaded) {
+      const cachedCountry = localStorage.getItem("country");
+      const cachedState = localStorage.getItem("state");
+      const cachedCity = localStorage.getItem("city");
+
+      if (cachedCountry && cachedState && cachedCity) {
+      // If cached data exists, set location from cache
+        setLocation({
+          country: cachedCountry,
+          state: cachedState,
+          city: cachedCity,
+        });
+        setIsGeoLoaded(true); // Mark geolocation as loaded
+        return; // Skip fetching geolocation data
+      }
+
+      if (cachedCountry && cachedState) {
+        // If country and state exist, update them and leave city empty
+        setLocation({
+          country: cachedCountry,
+          state: cachedState,
+          city: "",
+        });
+        setIsGeoLoaded(true);
+        return; // Skip geolocation if country and state are cached
+      }
+  
+      if (cachedCountry) {
+        // If only country exists, update country and leave state and city empty
+        setLocation({
+          country: cachedCountry,
+          state: "",
+          city: "",
+        });
+        setIsGeoLoaded(true);
+        return; // Skip geolocation if country is cached
+      }
+
+      if (location.country === "") {
+        setLocation({
+          country: "IN", // India country code
+          state: "",
+          city: "",
+        });
+      }
+
+      if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
@@ -55,27 +115,39 @@ const AdoptionAnimals = () => {
           );
           const data = await response.json();
           
-          const detectedCountry = data.countryName;
-          const detectedState = data.principalSubdivision;
-          const detectedCity = data.city;
+            const detectedCountry = data.countryName;
+            const detectedState = data.principalSubdivision;
+            const detectedCity = data.city;
 
-          const country = countries.find(c => c.name === detectedCountry);
-          const state = states.find(s => s.name === detectedState && s.country_code === country.iso2)
-          const city = cities.find(c => c.name === detectedCity && c.country_code === country.iso2 && c.state_code === state.state_code);
+            const country = countries.find(c => c.name === detectedCountry);
+            const state = states.find(s => s.name === detectedState && s.country_code === country.iso2)
+            const city = cities.find(c => c.name === detectedCity && c.country_code === country.iso2 && c.state_code === state.state_code);
+          
+            const newLocation = {
+              country: country ? country.iso2 : "",
+              state: state ? state.state_code : "",
+              city: city ? city.name : "",
+            };
 
-          setLocation({
-            country: country ? country.iso2 : "",
-            state: state ? state.state_code : "",
-            city: city ? city.name : "",
-          });
-          setIsGeoLoaded(true);
-        },
-        () => {
-          setIsGeoLoaded(true);
-        }
-      );
+            setLocation({
+              country: country ? country.iso2 : "",
+              state: state ? state.state_code : "",
+              city: city ? city.name : "",
+            });
+
+            localStorage.setItem("country", newLocation.country);
+            localStorage.setItem("state", newLocation.state);
+            localStorage.setItem("city", newLocation.city);
+
+            setIsGeoLoaded(true);
+          },
+          () => {
+            setIsGeoLoaded(true);
+          }
+        );
+      }
     }
-  }, [countries, states, cities, isGeoLoaded]);
+  }, [countries, states, cities, isGeoLoaded, location]);
 
   useEffect(() => {
     const loadCsvData = async () => {
@@ -120,16 +192,34 @@ const AdoptionAnimals = () => {
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setLocation({ ...location, country: selectedCountry, state: "", city: "" });
+    if(selectedCountry) {
+      localStorage.setItem("country", selectedCountry);
+    }
+    else {
+      localStorage.removeItem("country");
+    }
+    localStorage.removeItem("state");
+    localStorage.removeItem("city");
   };
 
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
     setLocation({ ...location, state: selectedState, city: "" });
+    if(selectedState) {
+      localStorage.setItem("state", selectedState);
+    }
+    else {
+      localStorage.removeItem("state", selectedState);
+    }
+    localStorage.removeItem("city");
   };
 
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
     setLocation({ ...location, city: selectedCity });
+    if(selectedCity) {
+    localStorage.setItem("city", selectedCity);
+    }
   };
 
   const filteredStates = states.filter(
@@ -144,6 +234,14 @@ const AdoptionAnimals = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center">Animals Up For Adoption</h2>
+      <button 
+        className="btn btn-primary mb-3"
+        onClick={() => setShowFilters(!showFilters)}
+      >
+        {showFilters ? "Hide Filters" : "Show Filters"}
+      </button>
+
+      {showFilters && (
         <div className="mb-4">
           <div className="row mb-3">
             <div className="col-md-4">
@@ -204,7 +302,9 @@ const AdoptionAnimals = () => {
             </div>
           </div>
         </div>
+      )}
 
+      {showFilters && (
         <div className="col-md-4 mb-4">
           <label htmlFor="speciesSelect" className="form-label">
             Species
@@ -222,6 +322,7 @@ const AdoptionAnimals = () => {
             <option value="Other">Other</option>
           </select>
         </div>
+        )}
 
       <div className="row g-3">
         {location.country === "" ? (
