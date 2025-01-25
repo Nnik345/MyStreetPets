@@ -7,7 +7,6 @@ const Footer = () => {
         <div className="row">
           {/* Contact Details on the Left */}
           <div className="col text-start">
-            <p className="mb-1">📞 Phone: +91 9962221877</p>
             <p className="mb-0">✉️ Email: nikhilsivakumar123@gmail.com</p>
           </div>
 

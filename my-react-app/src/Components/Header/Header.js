@@ -74,34 +74,48 @@ const Header = () => {
         </div>
 
         {/* Navigation Section */}
-        <div className="row">
-          <div className="col-12">
-            <nav>
-              <ul className="nav d-flex justify-content-between">
-                {/* Home Option */}
-                <li className="nav-item">
-                  <Link className="nav-link text-white fw-bold fs-4" to="/">
-                    Home
-                  </Link>
-                </li>
+<div className="row">
+  <div className="col-12">
+    <nav className="navbar navbar-expand-lg navbar-dark">
+      {/* Home Option */}
+      <ul className="navbar-nav me-auto align-items-end">
+        <li className="nav-item">
+          <Link className="nav-link text-white fw-bold fs-4" to="/">
+            Home
+          </Link>
+        </li>
+      </ul>
 
-                {/* Other Options */}
-                <div className="ms-auto d-flex">
-                  <li className="nav-item">
-                    <Link className="nav-link text-white" to="/street-animals">
-                      Street Animals
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link text-white" to="/adoption-animals">
-                      Adoption
-                    </Link>
-                  </li>
-                </div>
-              </ul>
-            </nav>
-          </div>
-        </div>
+      {/* Burger Menu */}
+      <button
+        className="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse justify-content-end" id="navbarContent">
+        <ul className="navbar-nav">
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/street-animals">
+              Street Animals
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/adoption-animals">
+              Adoption
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
       </div>
     </header>
   );

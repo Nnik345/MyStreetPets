@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
 import * as d3 from "d3";
+import { useAuth } from "react-oidc-context";
 
 const AdoptionAnimals = () => {
+  const auth = useAuth();
+  const isAdmin = auth.user?.profile?.['cognito:groups']?.includes('Admin');
+
   const [animals, setAnimals] = useState([]);
 
   const [location, setLocation] = useState({
@@ -234,12 +238,23 @@ const AdoptionAnimals = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center">Animals Up For Adoption</h2>
-      <button 
-        className="btn btn-primary mb-3"
-        onClick={() => setShowFilters(!showFilters)}
-      >
-        {showFilters ? "Hide Filters" : "Show Filters"}
-      </button>
+      <div className="d-flex justify-content-between mb-3">
+  <button 
+    className="btn btn-primary"
+    onClick={() => setShowFilters(!showFilters)}
+  >
+    {showFilters ? "Hide Filters" : "Show Filters"}
+  </button>
+  
+  {isAdmin && (
+    <button
+      className="btn btn-success"
+      onClick={() => navigate('/upload-adoption-animal')} // Navigate to Add Animal page
+    >
+      Add Animal
+    </button>
+  )}
+</div>
 
       {showFilters && (
         <div className="mb-4">
