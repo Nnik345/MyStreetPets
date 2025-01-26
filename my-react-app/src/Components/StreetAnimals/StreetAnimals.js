@@ -143,7 +143,7 @@ const StreetAnimals = () => {
         {isAdmin && (
           <button
             className="btn btn-success"
-            onClick={() => navigate("/upload-adoption-animal")} // Navigate to Add Animal page
+            onClick={() => navigate("/upload-street-animal")} // Navigate to Add Animal page
           >
             Add Animal
           </button>
@@ -179,6 +179,7 @@ const StreetAnimals = () => {
             value={radius}
             onChange={(e) => setRadius(e.target.value)}
           >
+            <option> value={1}1 km</option>
             <option value={5}>5 km</option>
             <option value={10}>10 km</option>
             <option value={15}>15 km</option>
