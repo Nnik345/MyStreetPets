@@ -43,3 +43,11 @@ const StreetAnimals = () => {
 };
 
 export default StreetAnimals;
+
+/*
+  + Location as Coords
+  + Caretaker
+
+  - Age
+  - Contact Details
+*/

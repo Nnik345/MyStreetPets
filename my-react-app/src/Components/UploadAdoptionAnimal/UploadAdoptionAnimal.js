@@ -172,6 +172,7 @@ const UploadAdoptionAnimal = () => {
       if (!name) missingFields.push('Name');
       if (!image) missingFields.push('Image');
       if (!breed) missingFields.push('Breed');
+      if (!about) missingFields.push('About');
       if (!species) missingFields.push('Species');
       if (!contact) missingFields.push('Contact');
       if (!gender) missingFields.push('Gender');
