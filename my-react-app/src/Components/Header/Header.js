@@ -60,6 +60,7 @@ const Header = () => {
                         className="dropdown-item"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
+                        onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
                       >
                         Add Animal
                       </button>
