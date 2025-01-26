@@ -6,7 +6,7 @@ import { useAuth } from "react-oidc-context";
 
 const AdoptionAnimals = () => {
   const auth = useAuth();
-  const isAdmin = auth.user?.profile?.['cognito:groups']?.includes('Admin');
+  const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
   const [animals, setAnimals] = useState([]);
 
@@ -30,10 +30,13 @@ const AdoptionAnimals = () => {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
-  const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
-  const citiesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv';
-  
+  const countriesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv";
+  const statesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv";
+  const citiesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv";
+
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -49,7 +52,7 @@ const AdoptionAnimals = () => {
     const cachedCountry = localStorage.getItem("country"); // Default to India
     const cachedState = localStorage.getItem("state") || "";
     const cachedCity = localStorage.getItem("city") || "";
-  
+
     setLocation({
       country: cachedCountry,
       state: cachedState,
@@ -58,7 +61,7 @@ const AdoptionAnimals = () => {
   }, []);
 
   const handleCardClick = (animal) => {
-    navigate(`/animal/${animal._id}`, { state: { animal } }); // Navigate with state
+    navigate(`/adoptionAnimal/${animal._id}`, { state: { animal } }); // Navigate with state
   };
 
   useEffect(() => {
@@ -68,7 +71,7 @@ const AdoptionAnimals = () => {
       const cachedCity = localStorage.getItem("city");
 
       if (cachedCountry && cachedState && cachedCity) {
-      // If cached data exists, set location from cache
+        // If cached data exists, set location from cache
         setLocation({
           country: cachedCountry,
           state: cachedState,
@@ -88,7 +91,7 @@ const AdoptionAnimals = () => {
         setIsGeoLoaded(true);
         return; // Skip geolocation if country and state are cached
       }
-  
+
       if (cachedCountry) {
         // If only country exists, update country and leave state and city empty
         setLocation({
@@ -109,24 +112,31 @@ const AdoptionAnimals = () => {
       }
 
       if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
 
-          // Use reverse geocoding API to fetch location details
-          const response = await fetch(
-            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-          );
-          const data = await response.json();
-          
+            // Use reverse geocoding API to fetch location details
+            const response = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+            );
+            const data = await response.json();
+
             const detectedCountry = data.countryName;
             const detectedState = data.principalSubdivision;
             const detectedCity = data.city;
 
-            const country = countries.find(c => c.name === detectedCountry);
-            const state = states.find(s => s.name === detectedState && s.country_code === country.iso2)
-            const city = cities.find(c => c.name === detectedCity && c.country_code === country.iso2 && c.state_code === state.state_code);
-          
+            const country = countries.find((c) => c.name === detectedCountry);
+            const state = states.find(
+              (s) => s.name === detectedState && s.country_code === country.iso2
+            );
+            const city = cities.find(
+              (c) =>
+                c.name === detectedCity &&
+                c.country_code === country.iso2 &&
+                c.state_code === state.state_code
+            );
+
             const newLocation = {
               country: country ? country.iso2 : "",
               state: state ? state.state_code : "",
@@ -161,10 +171,10 @@ const AdoptionAnimals = () => {
       );
       setCountries(filteredCountriesData);
 
-      const statesData = await d3.csv(statesCsvPath)
+      const statesData = await d3.csv(statesCsvPath);
       const filteredStatesData = statesData.filter(
         (row) => row.name && row.state_code
-      )
+      );
       setStates(filteredStatesData);
 
       const citiesData = await d3.csv(citiesCsvPath);
@@ -175,18 +185,18 @@ const AdoptionAnimals = () => {
 
   useEffect(() => {
     if (location.country) {
-      const country = countries.find(c => c.iso2 === location.country);
+      const country = countries.find((c) => c.iso2 === location.country);
       setCountryName(country ? country.name : "");
     }
   }, [location.country, countries]);
 
   useEffect(() => {
     if (location.state) {
-      const state = states.find(s => s.state_code === location.state);
+      const state = states.find((s) => s.state_code === location.state);
       setStateName(state ? state.name : "");
     }
   }, [location.state, states]);
-  
+
   useEffect(() => {
     if (location.city) {
       setCityName(location.city);
@@ -196,10 +206,9 @@ const AdoptionAnimals = () => {
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setLocation({ ...location, country: selectedCountry, state: "", city: "" });
-    if(selectedCountry) {
+    if (selectedCountry) {
       localStorage.setItem("country", selectedCountry);
-    }
-    else {
+    } else {
       localStorage.removeItem("country");
     }
     localStorage.removeItem("state");
@@ -209,10 +218,9 @@ const AdoptionAnimals = () => {
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
     setLocation({ ...location, state: selectedState, city: "" });
-    if(selectedState) {
+    if (selectedState) {
       localStorage.setItem("state", selectedState);
-    }
-    else {
+    } else {
       localStorage.removeItem("state", selectedState);
     }
     localStorage.removeItem("city");
@@ -221,8 +229,8 @@ const AdoptionAnimals = () => {
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
     setLocation({ ...location, city: selectedCity });
-    if(selectedCity) {
-    localStorage.setItem("city", selectedCity);
+    if (selectedCity) {
+      localStorage.setItem("city", selectedCity);
     }
   };
 
@@ -239,22 +247,22 @@ const AdoptionAnimals = () => {
     <div className="container mt-4">
       <h2 className="text-center">Animals Up For Adoption</h2>
       <div className="d-flex justify-content-between mb-3">
-  <button 
-    className="btn btn-primary"
-    onClick={() => setShowFilters(!showFilters)}
-  >
-    {showFilters ? "Hide Filters" : "Show Filters"}
-  </button>
-  
-  {isAdmin && (
-    <button
-      className="btn btn-success"
-      onClick={() => navigate('/upload-adoption-animal')} // Navigate to Add Animal page
-    >
-      Add Animal
-    </button>
-  )}
-</div>
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          {showFilters ? "Hide Filters" : "Show Filters"}
+        </button>
+
+        {isAdmin && (
+          <button
+            className="btn btn-success"
+            onClick={() => navigate("/upload-adoption-animal")} // Navigate to Add Animal page
+          >
+            Add Animal
+          </button>
+        )}
+      </div>
 
       {showFilters && (
         <div className="mb-4">
@@ -337,7 +345,7 @@ const AdoptionAnimals = () => {
             <option value="Other">Other</option>
           </select>
         </div>
-        )}
+      )}
 
       <div className="row g-3">
         {location.country === "" ? (
@@ -346,33 +354,41 @@ const AdoptionAnimals = () => {
               Select Your Location
             </div>
           </div>
-        ) : (animals.filter(animal => 
-          (animal.country === countryName || location.country === "") &&
-          (animal.state === stateName || location.state === "") &&
-          (animal.city === cityName || location.city === "" ||
-            (animal.state === stateName && cityName === "") || 
-            (animal.country === countryName && cityName === "" && stateName === "")) &&
-          (animal.species === species || species === ""))
-          .map((animal) => (
-          <div
-            key={animal._id}
-            className="col-sm-6 col-md-4 col-lg-3"
-            onClick={() => handleCardClick(animal)}
-            style={{ cursor: "pointer" }}
-          >
-            <div className="card">
-              <img
-                src={animal.image}
-                alt={animal.name}
-                className="card-img-top"
-                style={{ objectFit: "cover", height: "200px" }}
-              />
-              <div className="card-body text-center">
-                <h5 className="card-title">{animal.name}</h5>
+        ) : (
+          animals
+            .filter(
+              (animal) =>
+                (animal.country === countryName || location.country === "") &&
+                (animal.state === stateName || location.state === "") &&
+                (animal.city === cityName ||
+                  location.city === "" ||
+                  (animal.state === stateName && cityName === "") ||
+                  (animal.country === countryName &&
+                    cityName === "" &&
+                    stateName === "")) &&
+                (animal.species === species || species === "")
+            )
+            .map((animal) => (
+              <div
+                key={animal._id}
+                className="col-sm-6 col-md-4 col-lg-3"
+                onClick={() => handleCardClick(animal)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="card">
+                  <img
+                    src={animal.image}
+                    alt={animal.name}
+                    className="card-img-top"
+                    style={{ objectFit: "cover", height: "200px" }}
+                  />
+                  <div className="card-body text-center">
+                    <h5 className="card-title">{animal.name}</h5>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )))}
+            ))
+        )}
       </div>
     </div>
   );

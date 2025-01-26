@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { fetchAnimals } from "../../Utils/fetchStreetAnimals";
+import { useNavigate } from "react-router-dom";
 
 const StreetAnimals = () => {
   const [animals, setAnimals] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch data on component mount
@@ -13,6 +16,10 @@ const StreetAnimals = () => {
     getAnimals();
   }, []);
 
+  const handleCardClick = (animal) => {
+    navigate(`/streetAnimal/${animal._id}`, { state: { animal } });
+  }
+
   return (
     <div className="container mt-4">
       <h2 className="text-center">Street Animals</h2>
@@ -21,7 +28,7 @@ const StreetAnimals = () => {
           <div
             key={animal._id}
             className="col-sm-6 col-md-4 col-lg-3"
-            onClick={() => alert(`You clicked on ${animal.name}`)}
+            onClick={() => handleCardClick(animal)}
             style={{ cursor: "pointer" }}
           >
             <div className="card">

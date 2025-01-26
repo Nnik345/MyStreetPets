@@ -7,8 +7,9 @@ import Home from "./Components/Home/Home"; // Import Home component
 import StreetAnimals from "./Components/StreetAnimals/StreetAnimals"; // Import StreetAnimals component
 import AdoptionAnimals from "./Components/AdoptionAnimals/AdoptionAnimals"; // Import AdoptionAnimals component
 import UploadAdoptionAnimal from "./Components/UploadAdoptionAnimal/UploadAdoptionAnimal";
-import DetailAnimal from "./Components/DetailAdoptionAnimal/DetailAdoptionAnimal"; // Import DetailAnimal component
+import DetailAdoptionAnimal from "./Components/DetailAdoptionAnimal/DetailAdoptionAnimal"; // Import DetailAnimal component
 import UploadStreetAnimal from "./Components/UploadStreetAnimal/UploadStreetAnimal";
+import DetailStreetAnimal from "./Components/DetailStreetAnimal/DetailStreetAnimal";
 
 const App = () => {
   return (
@@ -25,12 +26,14 @@ const App = () => {
             <Route path="/street-animals" element={<StreetAnimals />} />
             {/* Add Street Animals Page */}
             <Route path="/upload-street-animal" element={<UploadStreetAnimal/>} />
+            {/* Detail Animal Page */}
+            <Route path="/streetAnimal/:id" element={<DetailStreetAnimal />} />
             {/* Adoption Animals Page */}
             <Route path="/adoption-animals" element={<AdoptionAnimals />} />
             {/* Add Adoption Animals Page */}
             <Route path="/upload-adoption-animal" element={<UploadAdoptionAnimal/>} />
             {/* Detail Animal Page */}
-            <Route path="/animal/:id" element={<DetailAnimal />} />
+            <Route path="/adoptionAnimal/:id" element={<DetailAdoptionAnimal />} />
           </Routes>
         </div>
 

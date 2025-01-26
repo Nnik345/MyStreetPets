@@ -20,40 +20,34 @@ const DetailAdoptionAnimal = () => {
           />
         </div>
 
-        {/* Name, Age, and Location */}
+        {/* Name, and Address */}
         <div className="col-md-6 d-flex flex-column justify-content-center">
           <h2>{animal.name}</h2>
           <p>
-            <strong>Age:</strong> {animal.age} <br />
             <strong>Gender:</strong> {animal.gender} <br />
-            <strong>Location:</strong> {`${animal.city}, ${animal.state}, ${animal.country}`}
+            <strong>Address:</strong> {animal.address}
           </p>
         </div>
       </div>
 
       <div className="row">
-        {/* About Section */}
-        <div className="col-12 mb-4">
-          <h4>About {animal.name}</h4>
-          <p>{animal.about}</p>
-        </div>
-
         <div className="col-12">
           <h5>Vaccination Status</h5>
-          <p>{animal.vaccinationStatus ? 'Vaccinated' : 'Not Vaccinated'}</p>
+          <p>{animal.vaccinationStatus ? "Vaccinated" : "Not Vaccinated"}</p>
         </div>
 
         <div className="col-12">
           <h5>Neuter Status</h5>
-          <p>{animal.neuterStatus ? 'Neutered' : 'Not Neutered'}</p>
+          <p>{animal.neuterStatus ? "Neutered" : "Not Neutered"}</p>
         </div>
 
-
-        {/* Contact Details */}
-        <div className="col-12">
-          <h5>Contact Details</h5>
-          <p>{animal.contactDetails}</p>
-        </div>
+        {/* Caretaker */}
+        {animal.caretaker && (
+          <div className="col-12">
+            <h5>Caretaker</h5>
+            <p>{animal.caretaker}</p>
+          </div>
+        )}
       </div>
     </div>
   );
