@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconImg from "../../Assets/Map Marker/marker-icon.png";
+import { useAuth } from "react-oidc-context";
 
 // Helper function to calculate the distance between two points (Haversine formula)
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -30,6 +31,9 @@ const StreetAnimals = () => {
   const [selectedLocation, setSelectedLocation] = useState(null); // User-selected map location
   const [userLocation, setUserLocation] = useState(null); // User's geolocation
   const [radius, setRadius] = useState(5);
+
+  const auth = useAuth();
+  const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
   const navigate = useNavigate();
 
@@ -135,6 +139,15 @@ const StreetAnimals = () => {
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
+
+        {isAdmin && (
+          <button
+            className="btn btn-success"
+            onClick={() => navigate("/upload-adoption-animal")} // Navigate to Add Animal page
+          >
+            Add Animal
+          </button>
+        )}
       </div>
 
       {/* Filter Options */}

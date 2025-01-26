@@ -367,7 +367,7 @@ const AdoptionAnimals = () => {
               (animal.species === species || species === "")
           ).length === 0 ? (
           <div className="col-12 text-center">
-            <div className="alert alert-warning" role="alert">
+            <div className="alert alert-info" role="alert">
               No animals found for the selected filters.
             </div>
           </div>
