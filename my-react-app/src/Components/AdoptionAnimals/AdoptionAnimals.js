@@ -338,7 +338,7 @@ const AdoptionAnimals = () => {
             value={species}
             onChange={(e) => setSpecies(e.target.value)}
           >
-            <option value="">Select Species</option>
+            <option value="">All Species</option>
             <option value="Dog">Dog</option>
             <option value="Cat">Cat</option>
             <option value="Bird">Bird</option>
@@ -352,6 +352,23 @@ const AdoptionAnimals = () => {
           <div className="col-12 text-center">
             <div className="alert alert-info" role="alert">
               Select Your Location
+            </div>
+          </div>
+        ) : animals.filter(
+            (animal) =>
+              (animal.country === countryName || location.country === "") &&
+              (animal.state === stateName || location.state === "") &&
+              (animal.city === cityName ||
+                location.city === "" ||
+                (animal.state === stateName && cityName === "") ||
+                (animal.country === countryName &&
+                  cityName === "" &&
+                  stateName === "")) &&
+              (animal.species === species || species === "")
+          ).length === 0 ? (
+          <div className="col-12 text-center">
+            <div className="alert alert-warning" role="alert">
+              No animals found for the selected filters.
             </div>
           </div>
         ) : (
