@@ -179,11 +179,11 @@ const StreetAnimals = () => {
             value={radius}
             onChange={(e) => setRadius(e.target.value)}
           >
-            <option> value={1}1 km</option>
+            <option value={1}>1 km</option>
+            <option value={2}>2 km</option>
+            <option value={3}>3 km</option>
             <option value={5}>5 km</option>
             <option value={10}>10 km</option>
-            <option value={15}>15 km</option>
-            <option value={20}>20 km</option>
           </select>
 
           <div>
