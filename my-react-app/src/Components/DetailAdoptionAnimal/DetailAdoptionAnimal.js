@@ -5,6 +5,8 @@ const DetailAdoptionAnimal = () => {
   const { state } = useLocation(); // Access route state
   const { animal } = state; // Destructure animal data
 
+  console.log(animal.about);
+
   // Generate the "About" section text
 
   return (
