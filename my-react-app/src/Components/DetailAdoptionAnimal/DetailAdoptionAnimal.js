@@ -37,7 +37,7 @@ const DetailAdoptionAnimal = () => {
         {/* About Section */}
         <div className="col-12 mb-4">
           <h4>About {animal.name}</h4>
-          <p>{animal.about}</p>
+          <p style={{ whiteSpace: 'pre-line' }}>{animal.about}</p>
         </div>
 
         <div className="col-12">
