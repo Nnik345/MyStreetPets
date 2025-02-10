@@ -47,7 +47,7 @@ Currently private, with plans to open-source in the future.
 ## Cloud Architecture Diagram
 Below is the AWS architecture for MyStreetPets:
 
-![AWS Architecture Diagram](link-to-diagram)
+![AWS Architecture Diagram](https://raw.githubusercontent.com/Nnik345/MyStreetPets/refs/heads/main/AWS%20Cloud%20Architecture%20Diagram.png)
 
 ---
 *The above diagram visually represents the AWS infrastructure used in the project.*
