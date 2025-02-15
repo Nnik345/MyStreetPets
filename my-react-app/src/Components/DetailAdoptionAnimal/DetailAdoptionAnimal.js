@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteAdoptionAnimal } from "../../Utils/deleteAdoptionAnimal"; // Import the function
+import { useAuth } from 'react-oidc-context';
 
 const DetailAdoptionAnimal = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { animal } = state;
+  const auth = useAuth();
+  const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
+    // Double-check admin status before proceeding
+    if (!auth.user?.profile?.["cognito:groups"]?.includes("Admin")) {
+      alert("You are not authorized to delete this animal.");
+      setShowModal(false);
+      return;
+    }
+
     setIsDeleting(true);
     const response = await deleteAdoptionAnimal(animal.image, animal.mongoId);
 
@@ -27,13 +37,15 @@ const DetailAdoptionAnimal = () => {
 
   return (
     <div className="container mt-4 position-relative">
-      {/* Delete Button */}
-      <button
-        className="btn btn-danger position-absolute top-0 end-0 m-3"
-        onClick={() => setShowModal(true)}
-      >
-        Delete
-      </button>
+      {/* Show Delete Button only if user is an admin */}
+      {isAdmin && (
+        <button
+          className="btn btn-danger position-absolute top-0 end-0 m-3"
+          onClick={() => setShowModal(true)}
+        >
+          Delete
+        </button>
+      )}
 
       {/* Confirmation Modal */}
       {showModal && (
