@@ -30,11 +30,27 @@ async function connectToDatabase() {
 
 exports.handler = async (event) => {
   try {
+    // Enable CORS for preflight (OPTIONS request)
+    if (event.httpMethod === "OPTIONS") {
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+        body: JSON.stringify({ message: "CORS preflight response" }),
+      };
+    }
+
     const { imageUrl, mongoId } = JSON.parse(event.body);
 
     if (!imageUrl || !mongoId) {
       return {
         statusCode: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({ message: "Missing required parameters" }),
       };
     }
@@ -59,18 +75,27 @@ exports.handler = async (event) => {
     if (result.deletedCount === 0) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({ message: "MongoDB record not found" }),
       };
     }
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ message: "Image and record deleted successfully" }),
     };
   } catch (error) {
     console.error("Error deleting file or MongoDB record:", error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ message: "Deletion failed", error: error.message }),
     };
   }
