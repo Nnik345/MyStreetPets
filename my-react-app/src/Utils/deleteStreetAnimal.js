@@ -1,4 +1,4 @@
-export const deleteAdoptionAnimal = async (imageUrl, mongoId) => {
+export const deleteStreetAnimal = async (imageUrl, mongoId) => {
     const API_GATEWAY_URL =
       "https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/deleteStreetAnimal"; // Replace with your actual API Gateway URL
   
