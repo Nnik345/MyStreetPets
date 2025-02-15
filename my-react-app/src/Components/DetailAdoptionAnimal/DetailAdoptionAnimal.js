@@ -22,7 +22,7 @@ const DetailAdoptionAnimal = () => {
     }
 
     setIsDeleting(true);
-    const response = await deleteAdoptionAnimal(animal.image, animal.mongoId);
+    const response = await deleteAdoptionAnimal(animal.image, animal._id);
 
     if (!response.error) {
       alert("Animal successfully deleted!");

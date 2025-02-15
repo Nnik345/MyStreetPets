@@ -21,7 +21,7 @@ const DetailStreetAnimal = () => {
     }
 
     setIsDeleting(true);
-    const response = await deleteStreetAnimal(animal.image, animal.mongoId);
+    const response = await deleteStreetAnimal(animal.image, animal._id);
 
     if (!response.error) {
       alert("Animal successfully deleted!");
