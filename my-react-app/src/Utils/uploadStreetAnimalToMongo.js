@@ -1,6 +1,6 @@
 export const uploadStreetAnimalMongo = async (animalData) => {
     try {
-      const response = await fetch('https://jmkce2ob92.execute-api.ap-south-1.amazonaws.com/default/updateStreetAnimals', {
+      const response = await fetch('https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/updateStreetAnimals', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

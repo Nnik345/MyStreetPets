@@ -12,7 +12,7 @@ export const uploadAdoptionAnimal = async (file) => {
         };
   
         try {
-          const response = await fetch('https://4ie59tql51.execute-api.ap-south-1.amazonaws.com/default/uploadAdoptionImage', {
+          const response = await fetch('https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/uploadAdoptionImage', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
