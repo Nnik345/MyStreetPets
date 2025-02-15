@@ -4,7 +4,7 @@ export const deleteStreetAnimal = async (imageUrl, mongoId) => {
   
     try {
       const response = await fetch(API_GATEWAY_URL, {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
