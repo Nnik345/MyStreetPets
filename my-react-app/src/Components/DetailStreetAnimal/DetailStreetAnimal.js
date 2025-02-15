@@ -25,7 +25,7 @@ const DetailStreetAnimal = () => {
 
     if (!response.error) {
       alert("Animal successfully deleted!");
-      navigate("/streetAnimal"); // Redirect after deletion
+      navigate("/street-animals"); // Redirect after deletion
     } else {
       alert("Failed to delete the animal. Please try again.");
     }

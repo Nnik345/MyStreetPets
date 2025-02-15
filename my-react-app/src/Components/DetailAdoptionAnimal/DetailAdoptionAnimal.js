@@ -26,7 +26,7 @@ const DetailAdoptionAnimal = () => {
 
     if (!response.error) {
       alert("Animal successfully deleted!");
-      navigate("/adoptionAnimal"); // Redirect after deletion
+      navigate("/adoption-animals"); // Redirect after deletion
     } else {
       alert("Failed to delete the animal. Please try again.");
     }
