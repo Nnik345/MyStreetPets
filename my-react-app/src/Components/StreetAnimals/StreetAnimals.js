@@ -25,6 +25,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 
 const StreetAnimals = () => {
   const [animals, setAnimals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filteredAnimals, setFilteredAnimals] = useState([]);
   const [species, setSpecies] = useState(""); // State to track selected species
   const [showFilters, setShowFilters] = useState(false); // Toggle filter section visibility
@@ -49,9 +50,11 @@ const StreetAnimals = () => {
   useEffect(() => {
     // Fetch data on component mount
     const getAnimals = async () => {
+      setIsLoading(true);
       const data = await fetchAnimals();
       setAnimals(data);
-      setFilteredAnimals(data); // Initialize filteredAnimals with all animals
+      setFilteredAnimals(data);
+      setIsLoading(false); // Initialize filteredAnimals with all animals
     };
     getAnimals();
   }, []);
@@ -126,6 +129,17 @@ const StreetAnimals = () => {
       <Marker position={selectedLocation} icon={customIcon}></Marker>
     ) : null;
   };
+
+  if (isLoading) {
+    return (
+      <div className="text-center mt-4">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading animals...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">

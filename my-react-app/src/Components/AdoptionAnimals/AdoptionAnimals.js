@@ -7,6 +7,7 @@ import { useAuth } from "react-oidc-context";
 const AdoptionAnimals = () => {
   const auth = useAuth();
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
+  const [isLoading, setIsLoading] = useState(true);
 
   const [animals, setAnimals] = useState([]);
 
@@ -40,10 +41,11 @@ const AdoptionAnimals = () => {
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    // Fetch data on component mount
     const getAnimals = async () => {
+      setIsLoading(true); // Start loading
       const data = await fetchAnimals();
       setAnimals(data);
+      setIsLoading(false); // Stop loading
     };
     getAnimals();
   }, []);
@@ -242,6 +244,17 @@ const AdoptionAnimals = () => {
       city.country_code === location.country &&
       city.state_code === location.state
   );
+
+  if (isLoading) {
+    return (
+      <div className="text-center mt-4">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading animals...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">
