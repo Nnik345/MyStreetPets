@@ -6,6 +6,8 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIconImg from "../../Assets/Map Marker/marker-icon.png";
+import { useNavigate } from "react-router-dom";
+import { fetchAnimals } from "../../Utils/fetchStreetAnimals";
 
 const UploadStreetAnimal = () => {
   const [name, setName] = useState("");
@@ -18,6 +20,8 @@ const UploadStreetAnimal = () => {
   const [loading, setLoading] = useState(false);
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [address, setAddress] = useState("");
+
+  const navigate = useNavigate();
 
   const customMarkerIcon = L.icon({
     iconUrl: markerIconImg, // Path to your custom image
@@ -78,10 +82,19 @@ const UploadStreetAnimal = () => {
           coordinates,
         };
 
-        console.log(animalData);
+        const response = await uploadStreetAnimalMongo(animalData);
+        const mongoId = response.insertedId;
+        const data = await fetchAnimals();
+        const uploadedAnimal = data.find((animal) => animal._id === mongoId);
 
-        await uploadStreetAnimalMongo(animalData);
-        alert("Animal uploaded successfully!");
+        if (uploadedAnimal) {
+          alert("Animal uploaded successfully! Navigating to details page");
+          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, {
+            state: { uploadedAnimal },
+          });
+        } else {
+          alert("Upload successful, could not navigate to the animal page.");
+        }
       } catch (error) {
         console.error("Error uploading animal:", error);
         alert("Failed to upload animal. Please try again.");

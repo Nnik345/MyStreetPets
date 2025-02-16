@@ -3,6 +3,8 @@ import { csv } from "d3";
 import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
 import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
 import { useAuth } from 'react-oidc-context';
+import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
+import { useNavigate } from "react-router-dom";
 
 const UploadAdoptionAnimal = () => {
   const [name, setName] = useState('');
@@ -24,6 +26,8 @@ const UploadAdoptionAnimal = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
   const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
@@ -160,8 +164,15 @@ const UploadAdoptionAnimal = () => {
         };
 
         const response = await uploadAdoptionAnimalMongo(animalData);
-        console.log(response);
-        alert('Animal uploaded successfully!');
+        const mongoId = response.insertedId;
+        const data = await fetchAnimals();
+        const uploadedAnimal = data.find(animal => animal._id === mongoId);
+        if (uploadedAnimal) {
+          alert('Animal uploaded successfully! Navigating to details page');
+          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, { state: { uploadedAnimal } });
+        } else {
+          alert('Upload successful, could not navigate to the animal page.');
+        }
       } catch (error) {
         console.error('Error uploading animal:', error);
         alert('Failed to upload animal. Please try again.');
