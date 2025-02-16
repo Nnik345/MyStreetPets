@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/bedrockCall
 /.pnp
 .pnp.js
 

@@ -14,7 +14,6 @@ const DetailAdoptionAnimal = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    // Double-check admin status before proceeding
     if (!auth.user?.profile?.["cognito:groups"]?.includes("Admin")) {
       alert("You are not authorized to delete this animal.");
       setShowModal(false);
@@ -26,7 +25,7 @@ const DetailAdoptionAnimal = () => {
 
     if (!response.error) {
       alert("Animal successfully deleted!");
-      navigate("/adoption-animals"); // Redirect after deletion
+      navigate("/adoption-animals");
     } else {
       alert("Failed to delete the animal. Please try again.");
     }
@@ -37,6 +36,14 @@ const DetailAdoptionAnimal = () => {
 
   return (
     <div className="container mt-4 position-relative">
+      {/* Back Button */}
+      <button 
+        className="btn btn-secondary position-absolute top-0 start-0 m-3" 
+        onClick={() => navigate(-1)}
+      >
+        ← Back
+      </button>
+
       {/* Show Delete Button only if user is an admin */}
       {isAdmin && (
         <button

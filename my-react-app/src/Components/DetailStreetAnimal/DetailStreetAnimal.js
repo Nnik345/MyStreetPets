@@ -25,7 +25,7 @@ const DetailStreetAnimal = () => {
 
     if (!response.error) {
       alert("Animal successfully deleted!");
-      navigate("/street-animals"); // Redirect after deletion
+      navigate("/street-animals");
     } else {
       alert("Failed to delete the animal. Please try again.");
     }
@@ -36,6 +36,14 @@ const DetailStreetAnimal = () => {
 
   return (
     <div className="container mt-4 position-relative">
+      {/* Back Button */}
+      <button 
+        className="btn btn-secondary position-absolute top-0 start-0 m-3" 
+        onClick={() => navigate(-1)}
+      >
+        ← Back
+      </button>
+
       {/* Show Delete Button only if user is an admin */}
       {isAdmin && (
         <button
