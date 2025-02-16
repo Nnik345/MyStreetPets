@@ -35,24 +35,26 @@ const DetailStreetAnimal = () => {
   };
 
   return (
-    <div className="container mt-4 position-relative">
-      {/* Back Button */}
-      <button 
-        className="btn btn-secondary position-absolute top-0 start-0 m-3" 
-        onClick={() => navigate(-1)}
-      >
-        ← Back
-      </button>
+    <div className="container mt-4">
+      {/* Buttons Row - Back and Delete */}
+      <div className="row mb-3">
+        <div className="col-12 d-flex justify-content-between">
+          {/* Back Button */}
+          <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
 
-      {/* Show Delete Button only if user is an admin */}
-      {isAdmin && (
-        <button
-          className="btn btn-danger position-absolute top-0 end-0 m-3"
-          onClick={() => setShowModal(true)}
-        >
-          Delete
-        </button>
-      )}
+          {/* Delete Button (Only for Admins) */}
+          {isAdmin && (
+            <button
+              className="btn btn-danger"
+              onClick={() => setShowModal(true)}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Confirmation Modal */}
       {showModal && (
