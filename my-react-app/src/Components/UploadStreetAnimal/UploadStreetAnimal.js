@@ -89,7 +89,7 @@ const UploadStreetAnimal = () => {
 
         if (uploadedAnimal) {
           alert("Animal uploaded successfully! Navigating to details page");
-          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, {
+          navigate(`/streetAnimal/${uploadedAnimal._id}`, {
             state: { uploadedAnimal },
           });
         } else {
