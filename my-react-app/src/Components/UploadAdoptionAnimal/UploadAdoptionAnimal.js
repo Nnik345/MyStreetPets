@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { csv } from "d3";
-import { uploadAdoptionAnimal } from '../../Utils/uploadAdoptionAnimal';
-import { uploadAdoptionAnimalMongo } from '../../Utils/uploadAdoptionAnimalToMongo.js';
-import { useAuth } from 'react-oidc-context';
+import { uploadAdoptionAnimal } from "../../Utils/uploadAdoptionAnimal";
+import { uploadAdoptionAnimalMongo } from "../../Utils/uploadAdoptionAnimalToMongo.js";
+import { useAuth } from "react-oidc-context";
 import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
 import { useNavigate } from "react-router-dom";
 
 const UploadAdoptionAnimal = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [image, setImage] = useState(null);
-  const [species, setSpecies] = useState('');
-  const [breed, setBreed] = useState('');
-  const [about, setAbout] = useState('');
-  const [regionCode, setRegionCode] = useState('+91');
-  const [contact, setContact] = useState('');
-  const [gender, setGender] = useState('');
+  const [species, setSpecies] = useState("");
+  const [breed, setBreed] = useState("");
+  const [about, setAbout] = useState("");
+  const [regionCode, setRegionCode] = useState("+91");
+  const [contact, setContact] = useState("");
+  const [gender, setGender] = useState("");
   const [regionCodes, setRegionCodes] = useState([]);
-  const [neuterStatus, setNeuterStatus] = useState('');
-  const [vaccinationStatus, setVaccinationStatus] = useState('');
-  const [age, setAge] = useState('');
-  const [country, setCountry] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
+  const [neuterStatus, setNeuterStatus] = useState("");
+  const [vaccinationStatus, setVaccinationStatus] = useState("");
+  const [age, setAge] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -29,10 +29,14 @@ const UploadAdoptionAnimal = () => {
 
   const navigate = useNavigate();
 
-  const countriesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv'
-  const statesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv';
-  const citiesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv';
-  const countryCodesCsvPath = 'https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/country-codes.csv'
+  const countriesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/countries.csv";
+  const statesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/states.csv";
+  const citiesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv";
+  const countryCodesCsvPath =
+    "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/country-codes.csv";
 
   useEffect(() => {
     // Load and parse the country codes CSV
@@ -40,17 +44,17 @@ const UploadAdoptionAnimal = () => {
       try {
         const regionCodesData = await csv(countryCodesCsvPath);
         const filteredRegionCodes = regionCodesData.filter(
-          (row) => row.Dial && row.official_name_en && row['ISO3166-1-Alpha-3']// Filter out rows with empty values
+          (row) => row.Dial && row.official_name_en && row["ISO3166-1-Alpha-3"] // Filter out rows with empty values
         );
         setRegionCodes(
           filteredRegionCodes.map((row) => ({
-            iso3: row['ISO3166-1-Alpha-3'],
+            iso3: row["ISO3166-1-Alpha-3"],
             code: row.Dial,
-            country: row.official_name_en
+            country: row.official_name_en,
           }))
         );
       } catch (error) {
-        console.error('Error loading region codes:', error);
+        console.error("Error loading region codes:", error);
       }
     };
     loadRegionCodes();
@@ -71,7 +75,7 @@ const UploadAdoptionAnimal = () => {
           }))
         );
       } catch (error) {
-        console.error('Error loading countries:', error);
+        console.error("Error loading countries:", error);
       }
     };
     loadCountries();
@@ -84,7 +88,8 @@ const UploadAdoptionAnimal = () => {
         try {
           const statesData = await csv(statesCsvPath);
           const filteredStates = statesData.filter(
-            (state) => (state.country_code === country) && state.state_code && state.name
+            (state) =>
+              state.country_code === country && state.state_code && state.name
           );
           setStates(
             filteredStates.map((state) => ({
@@ -110,8 +115,7 @@ const UploadAdoptionAnimal = () => {
         try {
           const citiesData = await csv(citiesCsvPath);
           const filteredCities = citiesData.filter(
-            (city) =>
-              city.country_code === country && city.state_code === state
+            (city) => city.country_code === country && city.state_code === state
           );
           setCities(
             filteredCities.map((city) => ({
@@ -140,13 +144,28 @@ const UploadAdoptionAnimal = () => {
       alert("Access not allowed. Only Admin users can upload animals.");
       return;
     }
-    
-    if (name && image && breed && species && contact && gender && neuterStatus && vaccinationStatus && age && country && state && city) {
+
+    if (
+      name &&
+      image &&
+      breed &&
+      species &&
+      contact &&
+      gender &&
+      neuterStatus &&
+      vaccinationStatus &&
+      age &&
+      country &&
+      state &&
+      city
+    ) {
       setLoading(true); // Set loading to true when upload starts
       try {
         const imageurl = await uploadAdoptionAnimal(image);
-        const selectedCountry = countries.find(c => c.value === country).label;
-        const selectedState = states.find(c => c.value === state).label;
+        const selectedCountry = countries.find(
+          (c) => c.value === country
+        ).label;
+        const selectedState = states.find((c) => c.value === state).label;
         const animalData = {
           name,
           image: imageurl,
@@ -155,47 +174,52 @@ const UploadAdoptionAnimal = () => {
           about,
           contactDetails: `${regionCode} ${contact}`,
           gender,
-          neuterStatus: neuterStatus === 'true',
-          vaccinationStatus: vaccinationStatus === 'true',
+          neuterStatus: neuterStatus === "true",
+          vaccinationStatus: vaccinationStatus === "true",
           age,
           country: selectedCountry,
           state: selectedState,
-          city
+          city,
         };
 
         const response = await uploadAdoptionAnimalMongo(animalData);
         const mongoId = response.insertedId;
         const data = await fetchAnimals();
-        const uploadedAnimal = data.find(animal => animal._id === mongoId);
+        const uploadedAnimal = data.find((animal) => animal._id === mongoId);
         if (uploadedAnimal) {
-          alert('Animal uploaded successfully! Navigating to details page');
-          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, { state: { uploadedAnimal } });
+          console.log(uploadedAnimal);
+          alert("Animal uploaded successfully! Navigating to details page");
+          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, {
+            state: { uploadedAnimal },
+          });
         } else {
-          alert('Upload successful, could not navigate to the animal page.');
+          alert("Upload successful, could not navigate to the animal page.");
         }
       } catch (error) {
-        console.error('Error uploading animal:', error);
-        alert('Failed to upload animal. Please try again.');
+        console.error("Error uploading animal:", error);
+        alert("Failed to upload animal. Please try again.");
       } finally {
         setLoading(false); // Reset loading state after upload is complete
       }
     } else {
       const missingFields = [];
-      if (!name) missingFields.push('Name');
-      if (!image) missingFields.push('Image');
-      if (!breed) missingFields.push('Breed');
-      if (!about) missingFields.push('About');
-      if (!species) missingFields.push('Species');
-      if (!contact) missingFields.push('Contact');
-      if (!gender) missingFields.push('Gender');
-      if (!neuterStatus) missingFields.push('Neuter Status');
-      if (!vaccinationStatus) missingFields.push('Vaccination Status');
-      if (!age) missingFields.push('Age');
-      if (!country) missingFields.push('Country');
-      if (!state) missingFields.push('State');
-      if (!city) missingFields.push('City');
+      if (!name) missingFields.push("Name");
+      if (!image) missingFields.push("Image");
+      if (!breed) missingFields.push("Breed");
+      if (!about) missingFields.push("About");
+      if (!species) missingFields.push("Species");
+      if (!contact) missingFields.push("Contact");
+      if (!gender) missingFields.push("Gender");
+      if (!neuterStatus) missingFields.push("Neuter Status");
+      if (!vaccinationStatus) missingFields.push("Vaccination Status");
+      if (!age) missingFields.push("Age");
+      if (!country) missingFields.push("Country");
+      if (!state) missingFields.push("State");
+      if (!city) missingFields.push("City");
 
-      alert(`Please fill out the following fields: ${missingFields.join(', ')}`);
+      alert(
+        `Please fill out the following fields: ${missingFields.join(", ")}`
+      );
     }
   };
 
@@ -221,11 +245,16 @@ const UploadAdoptionAnimal = () => {
 
       {/* Backdrop for grayed-out effect */}
       {loading && (
-        <div className="position-absolute top-0 start-0 w-100 h-100 bg-secondary opacity-50" style={{ zIndex: -1 }}></div>
+        <div
+          className="position-absolute top-0 start-0 w-100 h-100 bg-secondary opacity-50"
+          style={{ zIndex: -1 }}
+        ></div>
       )}
 
       <div className="mb-3">
-        <label htmlFor="name" className="form-label">Name:</label>
+        <label htmlFor="name" className="form-label">
+          Name:
+        </label>
         <input
           type="text"
           className="form-control"
@@ -238,7 +267,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="image" className="form-label">Image:</label>
+        <label htmlFor="image" className="form-label">
+          Image:
+        </label>
         <input
           type="file"
           className="form-control"
@@ -250,7 +281,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="species" className="form-label">Species:</label>
+        <label htmlFor="species" className="form-label">
+          Species:
+        </label>
         <select
           className="form-select"
           id="species"
@@ -267,7 +300,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="breed" className="form-label">Breed:</label>
+        <label htmlFor="breed" className="form-label">
+          Breed:
+        </label>
         <input
           type="text"
           className="form-control"
@@ -280,7 +315,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="about" className="form-label">About:</label>
+        <label htmlFor="about" className="form-label">
+          About:
+        </label>
         <textarea
           className="form-control"
           id="about"
@@ -293,11 +330,13 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="contact" className="form-label">Contact Details:</label>
+        <label htmlFor="contact" className="form-label">
+          Contact Details:
+        </label>
         <div className="d-flex">
           <select
             className="form-select me-2"
-            style={{ width: '20%' }}
+            style={{ width: "20%" }}
             value={regionCode}
             onChange={(e) => setRegionCode(e.target.value)}
             disabled={loading}
@@ -363,7 +402,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="age" className="form-label">Age:</label>
+        <label htmlFor="age" className="form-label">
+          Age:
+        </label>
         <input
           type="text"
           className="form-control"
@@ -376,7 +417,9 @@ const UploadAdoptionAnimal = () => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="country" className="form-label">Country:</label>
+        <label htmlFor="country" className="form-label">
+          Country:
+        </label>
         <select
           className="form-select"
           id="country"
@@ -384,14 +427,18 @@ const UploadAdoptionAnimal = () => {
           onChange={(e) => setCountry(e.target.value)}
         >
           <option value="">Select Country</option>
-          {countries.map(c => (
-            <option key={c.value} value={c.value}>{c.label}</option>
+          {countries.map((c) => (
+            <option key={c.value} value={c.value}>
+              {c.label}
+            </option>
           ))}
         </select>
       </div>
 
       <div className="mb-3">
-        <label htmlFor="state" className="form-label">State:</label>
+        <label htmlFor="state" className="form-label">
+          State:
+        </label>
         <select
           className="form-select"
           id="state"
@@ -400,14 +447,18 @@ const UploadAdoptionAnimal = () => {
           disabled={!country}
         >
           <option value="">Select State</option>
-          {states.map(s => (
-            <option key={s.value} value={s.value}>{s.label}</option>
+          {states.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
           ))}
         </select>
       </div>
 
       <div className="mb-3">
-        <label htmlFor="city" className="form-label">City:</label>
+        <label htmlFor="city" className="form-label">
+          City:
+        </label>
         <select
           className="form-select"
           id="city"
@@ -416,13 +467,19 @@ const UploadAdoptionAnimal = () => {
           disabled={!state}
         >
           <option value="">Select City</option>
-          {cities.map(ci => (
-            <option key={ci.value} value={ci.value}>{ci.label}</option>
+          {cities.map((ci) => (
+            <option key={ci.value} value={ci.value}>
+              {ci.label}
+            </option>
           ))}
         </select>
       </div>
 
-      <button className="btn btn-primary w-100" onClick={handleUpload} disabled={loading}>
+      <button
+        className="btn btn-primary w-100"
+        onClick={handleUpload}
+        disabled={loading}
+      >
         Upload
       </button>
     </div>
