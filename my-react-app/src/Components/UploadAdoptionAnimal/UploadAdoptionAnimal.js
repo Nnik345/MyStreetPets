@@ -159,7 +159,8 @@ const UploadAdoptionAnimal = () => {
           city
         };
 
-        await uploadAdoptionAnimalMongo(animalData);
+        const response = await uploadAdoptionAnimalMongo(animalData);
+        console.log(response);
         alert('Animal uploaded successfully!');
       } catch (error) {
         console.error('Error uploading animal:', error);
