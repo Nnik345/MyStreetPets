@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteAdoptionAnimal } from "../../Utils/deleteAdoptionAnimal"; // Import delete function
-import { useAuth } from 'react-oidc-context';
+import { useAuth } from "react-oidc-context";
 
 const DetailAdoptionAnimal = () => {
   const { state } = useLocation();
@@ -46,7 +46,10 @@ const DetailAdoptionAnimal = () => {
 
           {/* Delete Button (Only for Admins) */}
           {isAdmin && (
-            <button className="btn btn-danger" onClick={() => setShowModal(true)}>
+            <button
+              className="btn btn-danger"
+              onClick={() => setShowModal(true)}
+            >
               Delete
             </button>
           )}

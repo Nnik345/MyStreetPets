@@ -41,7 +41,10 @@ const Home = () => {
           data-bs-target="#heroSlider"
           data-bs-slide="prev"
         >
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Previous</span>
         </button>
         <button
@@ -50,7 +53,10 @@ const Home = () => {
           data-bs-target="#heroSlider"
           data-bs-slide="next"
         >
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>
@@ -61,24 +67,22 @@ const Home = () => {
           <div className="col-12">
             <h2 className="display-5 display-md-4 display-lg-3">About Us</h2>
             <p className="fs-5">
-              Welcome to MyStreetPets, a platform dedicated to
-              improving the lives of street animals. Our mission is twofold:
-              helping animals find loving homes through adoption and connecting
-              volunteers with street animals that need care, such as food and
-              water.
+              Welcome to MyStreetPets, a platform dedicated to improving the
+              lives of street animals. Our mission is twofold: helping animals
+              find loving homes through adoption and connecting volunteers with
+              street animals that need care, such as food and water.
             </p>
             <p className="fs-5">
-              We showcase animals available for adoption, making it easy for
-              you to find your perfect companion. Additionally, we highlight
-              street animals that remain in their local areas and rely on the
-              kindness of volunteers for their well-being.
+              We showcase animals available for adoption, making it easy for you
+              to find your perfect companion. Additionally, we highlight street
+              animals that remain in their local areas and rely on the kindness
+              of volunteers for their well-being.
             </p>
             <p className="fs-5">
-              At MyStreetPets, we believe in creating a
-              community that stands together to provide love, care, and support
-              to animals in need. Whether you’re looking to adopt or simply lend
-              a helping hand, you can make a difference with us—one act of
-              kindness at a time.
+              At MyStreetPets, we believe in creating a community that stands
+              together to provide love, care, and support to animals in need.
+              Whether you’re looking to adopt or simply lend a helping hand, you
+              can make a difference with us—one act of kindness at a time.
             </p>
           </div>
         </div>

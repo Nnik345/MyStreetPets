@@ -16,7 +16,6 @@ const App = () => {
     <Router>
       <div className="d-flex flex-column min-vh-100">
         <Header /> {/* Render the Header */}
-        
         {/* Main content */}
         <div className="flex-grow-1">
           <Routes>
@@ -25,18 +24,26 @@ const App = () => {
             {/* Street Animals Page */}
             <Route path="/street-animals" element={<StreetAnimals />} />
             {/* Add Street Animals Page */}
-            <Route path="/upload-street-animal" element={<UploadStreetAnimal/>} />
+            <Route
+              path="/upload-street-animal"
+              element={<UploadStreetAnimal />}
+            />
             {/* Detail Animal Page */}
             <Route path="/streetAnimal/:id" element={<DetailStreetAnimal />} />
             {/* Adoption Animals Page */}
             <Route path="/adoption-animals" element={<AdoptionAnimals />} />
             {/* Add Adoption Animals Page */}
-            <Route path="/upload-adoption-animal" element={<UploadAdoptionAnimal/>} />
+            <Route
+              path="/upload-adoption-animal"
+              element={<UploadAdoptionAnimal />}
+            />
             {/* Detail Animal Page */}
-            <Route path="/adoptionAnimal/:id" element={<DetailAdoptionAnimal />} />
+            <Route
+              path="/adoptionAnimal/:id"
+              element={<DetailAdoptionAnimal />}
+            />
           </Routes>
         </div>
-
         <Footer /> {/* Render the Footer */}
       </div>
     </Router>

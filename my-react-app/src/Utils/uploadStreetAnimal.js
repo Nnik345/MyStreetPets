@@ -22,13 +22,16 @@ export const uploadStreetAnimal = async (file) => {
       };
 
       try {
-        const response = await fetch("https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/uploadStreetImage", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
+        const response = await fetch(
+          "https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/uploadStreetImage",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
 
         if (response.ok) {
           const responseData = await response.json();
