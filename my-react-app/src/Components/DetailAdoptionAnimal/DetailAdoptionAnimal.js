@@ -10,8 +10,6 @@ const DetailAdoptionAnimal = () => {
   const auth = useAuth();
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
-  console.log(animal);
-
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
