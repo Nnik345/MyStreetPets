@@ -169,7 +169,8 @@ const UploadAdoptionAnimal = () => {
         const uploadedAnimal = data.find(animal => animal._id === mongoId);
         if (uploadedAnimal) {
           alert('Animal uploaded successfully! Navigating to details page');
-          navigate(`/adoptionAnimal/${uploadedAnimal._id}`, { state: { uploadedAnimal } });
+          //navigate(`/adoptionAnimal/${uploadedAnimal._id}`, { state: { uploadedAnimal } });
+          console.log(uploadedAnimal);
         } else {
           alert('Upload successful, could not navigate to the animal page.');
         }
