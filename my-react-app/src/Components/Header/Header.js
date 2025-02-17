@@ -59,7 +59,7 @@ const Header = () => {
               className="btn btn-outline-light me-2"
               onClick={toggleTheme}
             >
-              {theme === "light" ? <BsMoon /> : <BsSun />}
+              {theme === "light" ? <BsSun /> : <BsMoon />}
             </button>
 
             {auth.isAuthenticated ? (
