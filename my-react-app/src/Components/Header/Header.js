@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import logo from "../../Assets/Logo/Logo.jpg";
 import { useAuth } from "react-oidc-context";
+import { BsSun, BsMoon } from "react-icons/bs";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const auth = useAuth();
+
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "dark"
+  );
 
   const signoutRedirect = () => {
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
@@ -14,6 +20,15 @@ const Header = () => {
       logoutUri
     )}`;
     auth.removeUser();
+  };
+
+  useEffect(() => {
+    document.body.setAttribute("data-bs-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
@@ -37,8 +52,16 @@ const Header = () => {
             <h1>MyStreetPets</h1>
           </div>
 
-          {/* Authentication Section */}
-          <div className="col-auto ml-auto">
+          {/* Authentication & Theme Toggle Section */}
+          <div className="col-auto ml-auto d-flex align-items-center">
+            {/* Dark Mode Toggle Button */}
+            <button
+              className="btn btn-outline-light me-2"
+              onClick={toggleTheme}
+            >
+              {theme === "light" ? <BsMoon /> : <BsSun />}
+            </button>
+
             {auth.isAuthenticated ? (
               <div className="dropdown">
                 <button
