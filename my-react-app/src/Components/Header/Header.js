@@ -34,7 +34,7 @@ const Header = () => {
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
 
   return (
-    <header className="bg-dark text-white pt-0">
+    <header className="fixed-dark-header text-white pt-0">
       <div className="container-fluid">
         <div className="row align-items-center w-100">
           {/* Logo Section */}

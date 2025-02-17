@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.fixed-dark-header, 
+.fixed-dark-footer {
+  background-color: #121212 !important; /* Darker than Bootstrap's bg-dark */
+}
