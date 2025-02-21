@@ -23,16 +23,13 @@ const Header = () => {
   };
   
   useEffect(() => {
-    if (!auth.isAuthenticated) {
-      auth.getUser().then((user) => {
-        if (user) {
-          auth.signinSilent().catch((err) => {
-            console.log("Silent authentication failed:", err);
-          });
-        }
+    if (!auth.isAuthenticated && auth.user) {
+      auth.signinSilent().catch((err) => {
+        console.log("Silent authentication failed:", err);
       });
     }
   }, [auth]);
+  
   
 
   useEffect(() => {
