@@ -11,27 +11,29 @@ const Header = () => {
     () => localStorage.getItem("theme") || "dark"
   );
 
-  const signoutRedirect = () => {
+  const signoutRedirect = async () => {
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
     const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
     const cognitoDomain =
       "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
-      logoutUri
-    )}`;
-    auth.removeUser();
+  
+    await auth.signoutRedirect();
+    auth.removeUser(); // Clears stored session
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
+  
+  useEffect(() => {
+    if (!auth.isAuthenticated) {
+      auth.signinSilent().catch(() => {
+        console.log("Silent authentication failed. User needs to log in.");
+      });
+    }
+  }, [auth]);
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
-
-  useEffect(() => {
-    auth.signinSilent().catch(() => {
-      console.log("User session expired or not found.");
-    });
-  }, [auth]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
