@@ -8,44 +8,38 @@ import { AuthProvider, useAuth } from "react-oidc-context";
 
 // Cognito Authentication Configuration
 const cognitoAuthConfig = {
-  authority:
-    "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_JLy2YIb3Q",
+  authority: "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_JLy2YIb3Q",
   client_id: "6c1sk5bjlf8ritr0vmkec9f2eq",
   redirect_uri: "https://main.deealfgqu77r6.amplifyapp.com",
   response_type: "code",
-  scope: "email openid phone",
-  automaticSilentRenew: true, // Enables silent token renewal
+  scope: "openid email phone profile",
+  automaticSilentRenew: true, // Enables automatic token renewal
   loadUserInfo: true, // Fetches user info after login
 };
 
-// Function to handle token storage and silent sign-in
+// Token Management Component
 const AuthHandler = () => {
   const auth = useAuth();
 
-  // Save refresh token once user logs in
+  // Automatically renew the token when it expires
   useEffect(() => {
-    if (auth.user && auth.user.refresh_token) {
-      localStorage.setItem("refresh_token", auth.user.refresh_token);
-    }
-  }, [auth.user]);
-
-  // Try to sign in silently using refresh token
-  useEffect(() => {
-    const refreshAuth = async () => {
-      if (!auth.isAuthenticated && localStorage.getItem("refresh_token")) {
-        try {
-          const user = await auth.signinSilent();
-          if (user) {
-            console.log("User automatically signed in.");
-          }
-        } catch (error) {
-          console.error("Silent sign-in failed:", error);
-          localStorage.removeItem("refresh_token"); // Remove invalid token
-        }
+    const handleTokenExpiry = async () => {
+      console.log("Access token expired, attempting silent refresh...");
+      try {
+        await auth.signinSilent();
+        console.log("Token successfully refreshed.");
+      } catch (error) {
+        console.error("Silent sign-in failed:", error);
+        auth.signoutRedirect(); // Redirect user to login if refresh fails
       }
     };
 
-    refreshAuth();
+    // Listen for token expiration event and refresh it
+    auth.events.addAccessTokenExpired(handleTokenExpiry);
+
+    return () => {
+      auth.events.removeAccessTokenExpired(handleTokenExpiry);
+    };
   }, [auth]);
 
   return null; // No UI, just logic

@@ -22,15 +22,7 @@ const Header = () => {
   };
 
   const signoutRedirect = () => {
-    const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
-    const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
-    const cognitoDomain =
-      "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
-      logoutUri
-    )}`;
-    auth.removeUser();
-    localStorage.removeItem("refresh_token");
+    auth.signoutRedirect();
   };
 
   useEffect(() => {
