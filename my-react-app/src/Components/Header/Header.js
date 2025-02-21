@@ -16,12 +16,14 @@ const Header = () => {
     const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
     const cognitoDomain =
       "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
-  
+
     await auth.signoutRedirect();
     auth.removeUser(); // Clears stored session
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
+      logoutUri
+    )}`;
   };
-  
+
   useEffect(() => {
     if (!auth.isAuthenticated && auth.user) {
       auth.signinSilent().catch((err) => {
@@ -29,8 +31,6 @@ const Header = () => {
       });
     }
   }, [auth]);
-  
-  
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", theme);

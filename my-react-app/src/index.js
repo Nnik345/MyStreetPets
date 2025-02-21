@@ -7,7 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "react-oidc-context";
 
 const cognitoAuthConfig = {
-  authority: "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com",
+  authority:
+    "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_JLy2YIb3Q",
   client_id: "6c1sk5bjlf8ritr0vmkec9f2eq",
   redirect_uri: "https://main.deealfgqu77r6.amplifyapp.com",
   response_type: "code",
@@ -15,7 +16,6 @@ const cognitoAuthConfig = {
   automaticSilentRenew: true,
   userStore: window.localStorage, // Ensures tokens persist across sessions
 };
-
 
 const savedTheme = localStorage.getItem("theme") || "dark";
 document.body.setAttribute("data-bs-theme", savedTheme);
