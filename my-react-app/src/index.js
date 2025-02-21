@@ -13,8 +13,6 @@ const cognitoAuthConfig = {
   redirect_uri: "https://main.deealfgqu77r6.amplifyapp.com",
   response_type: "code",
   scope: "email openid phone",
-  automaticSilentRenew: true,
-  userStore: window.localStorage, // Ensures tokens persist across sessions
 };
 
 const savedTheme = localStorage.getItem("theme") || "dark";
