@@ -13,7 +13,7 @@ const Header = () => {
   );
 
   const signinRedirect = () => {
-    auth.sighinRedirect();
+    auth.signinRedirect();
 
     if (auth.user) {
       localStorage.setItem("refresh_token", auth.user.refresh_token);
