@@ -12,6 +12,14 @@ const Header = () => {
     () => localStorage.getItem("theme") || "dark"
   );
 
+  const signinRedirect = () => {
+    auth.sighinRedirect();
+
+    if (auth.user) {
+      localStorage.setItem("refresh_token", auth.user.refresh_token);
+    }
+  };
+
   const signoutRedirect = () => {
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
     const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
@@ -21,6 +29,7 @@ const Header = () => {
       logoutUri
     )}`;
     auth.removeUser();
+    localStorage.removeItem("refresh_token");
   };
 
   useEffect(() => {
@@ -118,7 +127,7 @@ const Header = () => {
             ) : (
               <button
                 className="btn btn-outline-light"
-                onClick={auth.signinRedirect}
+                onClick={signinRedirect}
               >
                 Sign In
               </button>
