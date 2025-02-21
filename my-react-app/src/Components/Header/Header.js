@@ -27,6 +27,12 @@ const Header = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    auth.signinSilent().catch(() => {
+      console.log("User session expired or not found.");
+    });
+  }, [auth]);
+
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
