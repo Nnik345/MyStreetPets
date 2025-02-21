@@ -7,19 +7,9 @@ import { useState, useEffect } from "react";
 const Header = () => {
   const auth = useAuth();
 
-  const [refreshToken, setrefreshToken] = useState(
-    () => localStorage.getItem("refresh_token") || ""
-  );
-
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
-
-  useEffect(() => {
-    if(auth.user) {
-      localStorage.setItem("refresh_token", auth.user.refresh_token);
-    }
-  });
 
   const signoutRedirect = () => {
     const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
