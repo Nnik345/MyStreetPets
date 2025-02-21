@@ -24,11 +24,16 @@ const Header = () => {
   
   useEffect(() => {
     if (!auth.isAuthenticated) {
-      auth.signinSilent().catch(() => {
-        console.log("Silent authentication failed. User needs to log in.");
+      auth.getUser().then((user) => {
+        if (user) {
+          auth.signinSilent().catch((err) => {
+            console.log("Silent authentication failed:", err);
+          });
+        }
       });
     }
   }, [auth]);
+  
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", theme);
