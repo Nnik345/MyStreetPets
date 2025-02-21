@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 
 const Header = () => {
   const auth = useAuth();
+  console.log(auth);
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
