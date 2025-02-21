@@ -6,18 +6,30 @@ import { useState, useEffect } from "react";
 
 const Header = () => {
   const auth = useAuth();
-  console.log(auth);
+
+  const [refreshToken, setrefreshToken] = useState(
+    () => localStorage.getItem("refresh_token") || ""
+  );
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
 
-  const signinRedirect = () => {
-    auth.signinRedirect();
-  };
+  useEffect(() => {
+    if(auth.user) {
+      localStorage.setItem("refresh_token", auth.user.refresh_token);
+    }
+  });
 
   const signoutRedirect = () => {
-    auth.signoutRedirect();
+    const clientId = "6c1sk5bjlf8ritr0vmkec9f2eq";
+    const logoutUri = "https://main.deealfgqu77r6.amplifyapp.com";
+    const cognitoDomain =
+      "https://ap-south-1jly2yib3q.auth.ap-south-1.amazoncognito.com";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
+      logoutUri
+    )}`;
+    auth.removeUser();
   };
 
   useEffect(() => {
@@ -115,7 +127,7 @@ const Header = () => {
             ) : (
               <button
                 className="btn btn-outline-light"
-                onClick={signinRedirect}
+                onClick={auth.signinRedirect}
               >
                 Sign In
               </button>
