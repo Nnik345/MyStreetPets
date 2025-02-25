@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import fetchAnimalsReview from "../../Utils/fetchAdoptionAnimalsReview";
+import { fetchAnimalsReview } from "../../Utils/fetchAdoptionAnimalsReview";
 import * as d3 from "d3";
 import { useAuth } from "react-oidc-context";
 
