@@ -141,8 +141,7 @@ const UploadAdoptionAnimal = () => {
   };
 
   const handleUpload = async () => {
-    console.log(auth);
-    if (auth.isAuthenticated) {
+    if (!auth.isAuthenticated) {
       alert("Access not allowed. Please sign in to upload animals.");
       return;
     }
