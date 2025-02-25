@@ -51,14 +51,14 @@ const DetailAdoptionAnimalReview = () => {
     };
     const response = await uploadAdoptionAnimalMongo(animalData);
 
+    await deleteReviewAdoptionAnimalMongo(animal._id);
+
     if (!response.error) {
       alert(`Animal has been approved!`);
       navigate("/approve-adoption-animals");
     } else {
       alert("Failed to approve the animal. Please try again.");
     }
-
-    await deleteReviewAdoptionAnimalMongo(animal._id);
 
     setShowApproveModal(false);
   };
