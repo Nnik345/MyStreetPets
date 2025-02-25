@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deleteReviewAdoptionAnimal } from "../../Utils/deleteReviewAdoptionAnimal"; // Import delete function
+import { deleteReviewAdoptionAnimal } from "../../Utils/deleteReviewAdoptionAnimal";
 import { useAuth } from "react-oidc-context";
-import { uploadAdoptionAnimalMongo } from "../../Utils/uploadAdoptionAnimalToMongo"; // Import approve function
-import { deleteReviewAdoptionAnimalMongo } from "../../Utils/deleteReviewAdoptionAnimalMongo"; // Import delete function
+import { uploadAdoptionAnimalMongo } from "../../Utils/uploadAdoptionAnimalToMongo";
+import { deleteReviewAdoptionAnimalMongo } from "../../Utils/deleteReviewAdoptionAnimalMongo";
 
 const DetailAdoptionAnimalReview = () => {
   const { state } = useLocation();
@@ -15,6 +15,7 @@ const DetailAdoptionAnimalReview = () => {
   const [showModal, setShowModal] = useState(false);
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -32,7 +33,7 @@ const DetailAdoptionAnimalReview = () => {
   };
 
   const confirmApprove = async () => {
-    setShowApproveModal(true);
+    setIsApproving(true);
     const animalData = {
       name: animal.name,
       image: animal.image,
@@ -60,6 +61,7 @@ const DetailAdoptionAnimalReview = () => {
       alert("Failed to approve the animal. Please try again.");
     }
 
+    setIsApproving(false);
     setShowApproveModal(false);
   };
 
@@ -74,29 +76,28 @@ const DetailAdoptionAnimalReview = () => {
 
   return (
     <div className="container mt-4">
-      {/* Buttons Row - Back, Approve, and Delete */}
+      {/* Buttons Row */}
       <div className="row mb-3">
         <div className="col-12 d-flex justify-content-between">
-          {/* Back Button */}
-          <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+          <button className="btn btn-secondary" onClick={() => navigate(-1)} disabled={isDeleting || isApproving}>
             ← Back
           </button>
 
           <div>
-            {/* Approve Button */}
             <button
               className="btn btn-success me-2"
               onClick={() => setShowApproveModal(true)}
+              disabled={isDeleting || isApproving}
             >
-              Approve
+              {isApproving ? <span className="spinner-border spinner-border-sm"></span> : "Approve"}
             </button>
 
-            {/* Delete Button */}
             <button
               className="btn btn-danger"
               onClick={() => setShowModal(true)}
+              disabled={isDeleting || isApproving}
             >
-              Delete
+              {isDeleting ? <span className="spinner-border spinner-border-sm"></span> : "Delete"}
             </button>
           </div>
         </div>
@@ -113,6 +114,7 @@ const DetailAdoptionAnimalReview = () => {
                   type="button"
                   className="btn-close"
                   onClick={() => setShowModal(false)}
+                  disabled={isDeleting}
                 ></button>
               </div>
               <div className="modal-body">
@@ -131,7 +133,13 @@ const DetailAdoptionAnimalReview = () => {
                   onClick={handleDelete}
                   disabled={isDeleting}
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm"></span> Deleting...
+                    </>
+                  ) : (
+                    "Delete"
+                  )}
                 </button>
               </div>
             </div>
@@ -150,6 +158,7 @@ const DetailAdoptionAnimalReview = () => {
                   type="button"
                   className="btn-close"
                   onClick={() => setShowApproveModal(false)}
+                  disabled={isApproving}
                 ></button>
               </div>
               <div className="modal-body">
@@ -159,11 +168,22 @@ const DetailAdoptionAnimalReview = () => {
                 <button
                   className="btn btn-secondary"
                   onClick={() => setShowApproveModal(false)}
+                  disabled={isApproving}
                 >
                   Cancel
                 </button>
-                <button className="btn btn-success" onClick={confirmApprove}>
-                  Approve
+                <button
+                  className="btn btn-success"
+                  onClick={confirmApprove}
+                  disabled={isApproving}
+                >
+                  {isApproving ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm"></span> Approving...
+                    </>
+                  ) : (
+                    "Approve"
+                  )}
                 </button>
               </div>
             </div>
@@ -171,10 +191,8 @@ const DetailAdoptionAnimalReview = () => {
         </div>
       )}
 
-      {/* Overlay for modals */}
-      {(showModal || showApproveModal) && (
-        <div className="modal-backdrop fade show"></div>
-      )}
+      {/* Overlay */}
+      {(showModal || showApproveModal) && <div className="modal-backdrop fade show"></div>}
 
       {/* Animal Details */}
       <div className="row mb-4">
@@ -194,25 +212,6 @@ const DetailAdoptionAnimalReview = () => {
             <strong>Location:</strong>{" "}
             {`${animal.city}, ${animal.state}, ${animal.country}`}
           </p>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-12 mb-4">
-          <h4>About {animal.name}</h4>
-          <p style={{ whiteSpace: "pre-line" }}>{animal.about}</p>
-        </div>
-        <div className="col-12">
-          <h5>Vaccination Status</h5>
-          <p>{animal.vaccinationStatus ? "Vaccinated" : "Not Vaccinated"}</p>
-        </div>
-        <div className="col-12">
-          <h5>Neuter Status</h5>
-          <p>{animal.neuterStatus ? "Neutered" : "Not Neutered"}</p>
-        </div>
-        <div className="col-12">
-          <h5>Contact Details</h5>
-          <p>{animal.contactDetails}</p>
         </div>
       </div>
     </div>

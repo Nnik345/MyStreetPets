@@ -14,7 +14,7 @@ const DetailStreetAnimal = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    if (!auth.user?.profile?.["cognito:groups"]?.includes("Admin")) {
+    if (!isAdmin) {
       alert("You are not authorized to delete this animal.");
       setShowModal(false);
       return;
@@ -40,7 +40,11 @@ const DetailStreetAnimal = () => {
       <div className="row mb-3">
         <div className="col-12 d-flex justify-content-between">
           {/* Back Button */}
-          <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate(-1)}
+            disabled={isDeleting}
+          >
             ← Back
           </button>
 
@@ -49,8 +53,9 @@ const DetailStreetAnimal = () => {
             <button
               className="btn btn-danger"
               onClick={() => setShowModal(true)}
+              disabled={isDeleting}
             >
-              Delete
+              {isDeleting ? <span className="spinner-border spinner-border-sm"></span> : "Delete"}
             </button>
           )}
         </div>
@@ -67,6 +72,7 @@ const DetailStreetAnimal = () => {
                   type="button"
                   className="btn-close"
                   onClick={() => setShowModal(false)}
+                  disabled={isDeleting}
                 ></button>
               </div>
               <div className="modal-body">
@@ -85,7 +91,13 @@ const DetailStreetAnimal = () => {
                   onClick={handleDelete}
                   disabled={isDeleting}
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm"></span> Deleting...
+                    </>
+                  ) : (
+                    "Delete"
+                  )}
                 </button>
               </div>
             </div>
