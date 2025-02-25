@@ -1,4 +1,4 @@
-export const uploadAdoptionAnimalMongo = async (animalData) => {
+export const uploadAdoptionAnimalForReview = async (animalData) => {
     try {
       const response = await fetch(
         "https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/uploadAdoptionAnimalForReview",
