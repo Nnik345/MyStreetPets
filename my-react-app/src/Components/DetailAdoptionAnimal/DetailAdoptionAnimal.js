@@ -44,8 +44,8 @@ const DetailAdoptionAnimal = () => {
             ← Back
           </button>
 
-          {/* Delete Button (Only for Admins) */}
-          {isAdmin && (
+          {/* Delete Button */}
+          {(isAdmin || animal.username === auth.user.username) && (
             <button
               className="btn btn-danger"
               onClick={() => setShowModal(true)}
