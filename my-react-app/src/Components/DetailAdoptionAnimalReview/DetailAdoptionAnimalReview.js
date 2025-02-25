@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteReviewAdoptionAnimal } from "../../Utils/deleteReviewAdoptionAnimal"; // Import delete function
 import { useAuth } from "react-oidc-context";
-import { approveAdoptionAnimal } from "../../Utils/approveAdoptionAnimal"; // Import approve function
+import { uploadAdoptionAnimalToMongo } from "../../Utils/uploadAdoptionAnimalToMongo"; // Import approve function
 import { deleteReviewAdoptionAnimalMongo } from "../../Utils/deleteReviewAdoptionAnimalMongo"; // Import delete function
 
 const DetailAdoptionAnimalReview = () => {
@@ -33,7 +33,7 @@ const DetailAdoptionAnimalReview = () => {
 
   const confirmApprove = async () => {
     setShowApproveModal(true);
-    const response = await approveAdoptionAnimal(animal);
+    const response = await uploadAdoptionAnimalToMongo(animal);
 
     if (!response.error) {
       alert(`Animal has been approved!`);
