@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { fetchAnimalsReview } from "../../Utils/fetchAdoptionAnimalsReview";
+import fetchAnimalsReview from "../../Utils/fetchAdoptionAnimalsReview";
 import * as d3 from "d3";
 import { useAuth } from "react-oidc-context";
 
@@ -38,7 +38,7 @@ const ApproveAdoptionAnimals = () => {
   const citiesCsvPath =
     "https://my-street-pets.s3.ap-south-1.amazonaws.com/customDatabases/cities.csv";
 
-  const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const getAnimals = async () => {
