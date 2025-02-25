@@ -141,6 +141,11 @@ const UploadAdoptionAnimal = () => {
   };
 
   const handleUpload = async () => {
+    if (auth.isAuthenticated) {
+      alert("Access not allowed. Please sign in to upload animals.");
+      return;
+    }
+
     if (
       name &&
       image &&
@@ -194,18 +199,8 @@ const UploadAdoptionAnimal = () => {
           }
         }
         else {
-          const response = await uploadAdoptionAnimalForReview(animalData);
-          const mongoId = response.insertedId;
-          const data = await fetchAnimals();
-          const animal = data.find((animal) => animal._id === mongoId);
-          if (animal) {
-            alert("Animal uploaded for review successfully! Navigating to details page");
-            navigate(`/adoptionAnimal/${animal._id}`, {
-              state: { animal },
-            });
-          } else {
-            alert("Upload successful, could not navigate to the animal page.");
-          }
+          await uploadAdoptionAnimalForReview(animalData);
+          alert("Animal uploaded for review successfully!");
         }
       } catch (error) {
         console.error("Error uploading animal:", error);
@@ -234,6 +229,15 @@ const UploadAdoptionAnimal = () => {
       );
     }
   };
+
+  if (!auth.isAuthenticated) {
+    return (
+      <div className="container mt-5">
+        <h2 className="text-center text-danger">Access Not Allowed</h2>
+        <p className="text-center">Please sign in to access this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5 position-relative">
