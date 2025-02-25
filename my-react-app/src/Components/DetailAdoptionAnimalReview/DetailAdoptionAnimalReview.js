@@ -33,7 +33,23 @@ const DetailAdoptionAnimalReview = () => {
 
   const confirmApprove = async () => {
     setShowApproveModal(true);
-    const response = await uploadAdoptionAnimalMongo(animal);
+    const animalData = {
+      name: animal.name,
+      image: animal.image,
+      species: animal.species,
+      breed: animal.breed,
+      about: animal.about,
+      contactDetails: animal.contactDetails,
+      gender: animal.gender,
+      neuterStatus: animal.neuterStatus,
+      vaccinationStatus: animal.vaccinationStatus,
+      age: animal.age,
+      country: animal.country,
+      state: animal.state,
+      city: animal.city,
+      username: auth.user.username,
+    };
+    const response = await uploadAdoptionAnimalMongo(animalData);
 
     if (!response.error) {
       alert(`Animal has been approved!`);
