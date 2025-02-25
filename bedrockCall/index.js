@@ -1,50 +1,31 @@
-import { BedrockClient, ListFoundationModelsCommand } from "@aws-sdk/client-bedrock";
-import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
+const { BedrockRuntimeClient, InvokeModelCommand } = require("@aws-sdk/client-bedrock-runtime");
 
-const bedrock = new BedrockClient({ region: "us-east-1" });
-const bedrockRuntime = new BedrockRuntimeClient({ region: "us-east-1" });
+const client = new BedrockRuntimeClient({ region: "ap-south-1" });  // Change region if needed
 
-export const lambdaHandler = async (event) => {
-  try {
-    // Retrieve information about available models
-    const foundationModels = await bedrock.send(new ListFoundationModelsCommand({}));
-    const matchingModel = foundationModels.modelSummaries.find(model => model.modelName === "Jurassic-2 Ultra");
+exports.handler = async (event) => {
+    const input = {
+        endpointId: "arn:aws:sagemaker:ap-south-1:024848451206:endpoint/my-street-pets",
+        body: JSON.stringify({
+            prompt: "Hello, how are you?"
+        })
+    };
 
-    if (!matchingModel) {
-      throw new Error("Model not found");
+    try {
+        const command = new InvokeModelCommand(input);
+        const response = await client.send(command);
+
+        const responseBody = JSON.parse(Buffer.from(response.body).toString());
+        console.log("Response:", responseBody);
+        
+        return {
+            statusCode: 200,
+            body: JSON.stringify(responseBody)
+        };
+    } catch (error) {
+        console.error("Error:", error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message })
+        };
     }
-
-    const { question } = JSON.parse(event.body).input;
-
-    // The payload to be provided to Bedrock
-    const body = JSON.stringify({
-      prompt: question,
-      maxTokens: 200,
-      temperature: 0.7,
-      topP: 1,
-    });
-
-    // Invoke the model
-    const response = await bedrockRuntime.send(
-      new InvokeModelCommand({
-        body,
-        modelId: matchingModel.modelId,
-        accept: "application/json",
-        contentType: "application/json",
-      })
-    );
-
-    const responseBody = JSON.parse(Buffer.from(response.body).toString());
-    const answer = responseBody.completions[0]?.data?.text || "No answer provided";
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ Answer: answer }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
-  }
 };

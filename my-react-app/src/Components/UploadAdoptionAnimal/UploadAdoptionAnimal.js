@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { csv } from "d3";
 import { uploadAdoptionAnimal } from "../../Utils/uploadAdoptionAnimal";
 import { uploadAdoptionAnimalMongo } from "../../Utils/uploadAdoptionAnimalToMongo.js";
+import { uploadAdoptionAnimalForReview } from "../../Utils/uploadAdoptionAnimalForReview.js";
 import { useAuth } from "react-oidc-context";
 import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
 import { useNavigate } from "react-router-dom";
@@ -140,11 +141,6 @@ const UploadAdoptionAnimal = () => {
   };
 
   const handleUpload = async () => {
-    if (!isAdmin) {
-      alert("Access not allowed. Only Admin users can upload animals.");
-      return;
-    }
-
     if (
       name &&
       image &&
@@ -180,19 +176,36 @@ const UploadAdoptionAnimal = () => {
           country: selectedCountry,
           state: selectedState,
           city,
+          username: auth.user.username,
         };
 
-        const response = await uploadAdoptionAnimalMongo(animalData);
-        const mongoId = response.insertedId;
-        const data = await fetchAnimals();
-        const animal = data.find((animal) => animal._id === mongoId);
-        if (animal) {
-          alert("Animal uploaded successfully! Navigating to details page");
-          navigate(`/adoptionAnimal/${animal._id}`, {
-            state: { animal },
-          });
-        } else {
-          alert("Upload successful, could not navigate to the animal page.");
+        if (isAdmin) {
+          const response = await uploadAdoptionAnimalMongo(animalData);
+          const mongoId = response.insertedId;
+          const data = await fetchAnimals();
+          const animal = data.find((animal) => animal._id === mongoId);
+          if (animal) {
+            alert("Animal uploaded successfully! Navigating to details page");
+            navigate(`/adoptionAnimal/${animal._id}`, {
+              state: { animal },
+            });
+          } else {
+            alert("Upload successful, could not navigate to the animal page.");
+          }
+        }
+        else {
+          const response = await uploadAdoptionAnimalForReview(animalData);
+          const mongoId = response.insertedId;
+          const data = await fetchAnimals();
+          const animal = data.find((animal) => animal._id === mongoId);
+          if (animal) {
+            alert("Animal uploaded for review successfully! Navigating to details page");
+            navigate(`/adoptionAnimal/${animal._id}`, {
+              state: { animal },
+            });
+          } else {
+            alert("Upload successful, could not navigate to the animal page.");
+          }
         }
       } catch (error) {
         console.error("Error uploading animal:", error);
@@ -221,15 +234,6 @@ const UploadAdoptionAnimal = () => {
       );
     }
   };
-
-  if (!isAdmin) {
-    return (
-      <div className="container mt-5">
-        <h2 className="text-center text-danger">Access Not Allowed</h2>
-        <p className="text-center">You must be an Admin to access this page.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="container mt-5 position-relative">
