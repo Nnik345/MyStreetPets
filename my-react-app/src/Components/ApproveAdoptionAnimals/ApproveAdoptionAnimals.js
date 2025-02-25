@@ -63,7 +63,7 @@ const ApproveAdoptionAnimals = () => {
   }, []);
 
   const handleCardClick = (animal) => {
-    navigate(`/adoption-animal/${animal._id}`, { state: { animal } }); // Navigate with state
+    navigate(`/approve-adoption-animal/${animal._id}`, { state: { animal } }); // Navigate with state
   };
 
   useEffect(() => {

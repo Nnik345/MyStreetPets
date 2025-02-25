@@ -11,6 +11,7 @@ import DetailAdoptionAnimal from "./Components/DetailAdoptionAnimal/DetailAdopti
 import UploadStreetAnimal from "./Components/UploadStreetAnimal/UploadStreetAnimal";
 import ApproveAdoptionAnimals from "./Components/ApproveAdoptionAnimals/ApproveAdoptionAnimals";
 import DetailStreetAnimal from "./Components/DetailStreetAnimal/DetailStreetAnimal";
+import DetailAdoptionAnimalReview from "./Components/DetailAdoptionAnimal/DetailAdoptionAnimalReview";
 
 const App = () => {
   return (
@@ -40,13 +41,17 @@ const App = () => {
             />
             {/* Approve Adoption Animals Page */}
             <Route
-              path="/approve-animals"
+              path="/approve-adoption-animals"
               element={<ApproveAdoptionAnimals />}
             />
             {/* Detail Animal Page */}
             <Route
               path="/adoption-animal/:id"
               element={<DetailAdoptionAnimal />}
+            />
+            <Route
+              path="approve-adoption-animal/:id"
+              element={<DetailAdoptionAnimalReview />}
             />
           </Routes>
         </div>

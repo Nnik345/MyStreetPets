@@ -14,7 +14,7 @@ const DetailAdoptionAnimal = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    if (!auth.user?.profile?.["cognito:groups"]?.includes("Admin")) {
+    if (!auth.user?.profile?.["cognito:groups"]?.includes("Admin") || auth.user.username !== animal.username) {
       alert("You are not authorized to delete this animal.");
       setShowModal(false);
       return;

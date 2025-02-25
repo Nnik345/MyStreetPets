@@ -108,7 +108,7 @@ const Header = () => {
                         </ul>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="/approve-animals">
+                        <Link className="dropdown-item" to="/approve-adoption-animals">
                           Approve Animals
                         </Link>
                       </li>
