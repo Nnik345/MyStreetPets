@@ -9,6 +9,7 @@ import AdoptionAnimals from "./Components/AdoptionAnimals/AdoptionAnimals"; // I
 import UploadAdoptionAnimal from "./Components/UploadAdoptionAnimal/UploadAdoptionAnimal";
 import DetailAdoptionAnimal from "./Components/DetailAdoptionAnimal/DetailAdoptionAnimal"; // Import DetailAnimal component
 import UploadStreetAnimal from "./Components/UploadStreetAnimal/UploadStreetAnimal";
+import ApproveAdoptionAnimals from "./Components/ApproveAdoptionAnimals/ApproveAdoptionAnimals";
 import DetailStreetAnimal from "./Components/DetailStreetAnimal/DetailStreetAnimal";
 
 const App = () => {
@@ -29,7 +30,7 @@ const App = () => {
               element={<UploadStreetAnimal />}
             />
             {/* Detail Animal Page */}
-            <Route path="/streetAnimal/:id" element={<DetailStreetAnimal />} />
+            <Route path="/street-animal/:id" element={<DetailStreetAnimal />} />
             {/* Adoption Animals Page */}
             <Route path="/adoption-animals" element={<AdoptionAnimals />} />
             {/* Add Adoption Animals Page */}
@@ -37,9 +38,14 @@ const App = () => {
               path="/upload-adoption-animal"
               element={<UploadAdoptionAnimal />}
             />
+            {/* Approve Adoption Animals Page */}
+            <Route
+              path="/approve-animals"
+              element={<ApproveAdoptionAnimals />}
+            />
             {/* Detail Animal Page */}
             <Route
-              path="/adoptionAnimal/:id"
+              path="/adoption-animal/:id"
               element={<DetailAdoptionAnimal />}
             />
           </Routes>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { fetchAnimals } from "../../Utils/fetchAdoptionAnimals";
+import { fetchAnimalsReview } from "../../Utils/fetchAdoptionAnimalsReview";
 import * as d3 from "d3";
 import { useAuth } from "react-oidc-context";
 
-const AdoptionAnimals = () => {
+const ApproveAdoptionAnimals = () => {
   const auth = useAuth();
   const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +43,7 @@ const AdoptionAnimals = () => {
   useEffect(() => {
     const getAnimals = async () => {
       setIsLoading(true); // Start loading
-      const data = await fetchAnimals();
+      const data = await fetchAnimalsReview();
       setAnimals(data);
       setIsLoading(false); // Stop loading
     };
@@ -245,6 +245,15 @@ const AdoptionAnimals = () => {
       city.state_code === location.state
   );
 
+  if (!isAdmin) {
+    return (
+      <div className="container mt-5">
+        <h2 className="text-center text-danger">Access Not Allowed</h2>
+        <p className="text-center">You must be an Admin to access this page.</p>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="text-center mt-4">
@@ -258,7 +267,7 @@ const AdoptionAnimals = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center">Animals Up For Adoption</h2>
+      <h2 className="text-center">Review Animals Up For Adoption</h2>
       <div className="d-flex justify-content-between mb-3">
         <button
           className="btn btn-primary"
@@ -266,15 +275,6 @@ const AdoptionAnimals = () => {
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
-
-        {isAdmin && (
-          <button
-            className="btn btn-success"
-            onClick={() => navigate("/upload-adoption-animal")} // Navigate to Add Animal page
-          >
-            Add Animal
-          </button>
-        )}
       </div>
 
       {showFilters && (
@@ -424,4 +424,4 @@ const AdoptionAnimals = () => {
   );
 };
 
-export default AdoptionAnimals;
+export default ApproveAdoptionAnimals;

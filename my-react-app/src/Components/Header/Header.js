@@ -78,34 +78,41 @@ const Header = () => {
                   aria-labelledby="userDropdown"
                 >
                   {isAdmin && (
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
-                      >
-                        Add Animal
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to="/upload-street-animal"
-                          >
-                            Street Animal
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to="/upload-adoption-animal"
-                          >
-                            Adoption Animal
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
+                        >
+                          Add Animal
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li>
+                            <Link
+                              className="dropdown-item"
+                              to="/upload-street-animal"
+                            >
+                              Street Animal
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              className="dropdown-item"
+                              to="/upload-adoption-animal"
+                            >
+                              Adoption Animal
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/approve-animals">
+                          Approve Animals
+                        </Link>
+                      </li>
+                    </>
                   )}
                   <li>
                     <button className="dropdown-item" onClick={signoutRedirect}>

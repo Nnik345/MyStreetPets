@@ -110,7 +110,7 @@ const StreetAnimals = () => {
   }, [species, animals, userLocation, selectedLocation, radius]);
 
   const handleCardClick = (animal) => {
-    navigate(`/streetAnimal/${animal._id}`, { state: { animal } });
+    navigate(`/street-animal/${animal._id}`, { state: { animal } });
   };
 
   const handleSpeciesChange = (e) => {
