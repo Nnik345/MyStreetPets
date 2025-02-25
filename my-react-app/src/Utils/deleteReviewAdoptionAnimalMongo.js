@@ -1,4 +1,4 @@
-export const deleteReviewAdoptionAnimal = async (mongoId) => {
+export const deleteReviewAdoptionAnimalMongo = async (mongoId) => {
     const API_GATEWAY_URL =
       "https://6l4spdgvi3.execute-api.ap-south-1.amazonaws.com/default/deleteReviewAdoptionAnimalMongo"; // Replace with your actual API Gateway URL
   

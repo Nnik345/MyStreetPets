@@ -11,7 +11,7 @@ import DetailAdoptionAnimal from "./Components/DetailAdoptionAnimal/DetailAdopti
 import UploadStreetAnimal from "./Components/UploadStreetAnimal/UploadStreetAnimal";
 import ApproveAdoptionAnimals from "./Components/ApproveAdoptionAnimals/ApproveAdoptionAnimals";
 import DetailStreetAnimal from "./Components/DetailStreetAnimal/DetailStreetAnimal";
-import DetailAdoptionAnimalReview from "./Components/DetailAdoptionAnimal/DetailAdoptionAnimalReview";
+import DetailAdoptionAnimalReview from "./Components/DetailAdoptionAnimalReview/DetailAdoptionAnimalReview";
 
 const App = () => {
   return (
