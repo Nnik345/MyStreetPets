@@ -267,7 +267,7 @@ const AdoptionAnimals = () => {
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
 
-        {isAdmin && (
+        {auth.isAuthenticated && (
           <button
             className="btn btn-success"
             onClick={() => navigate("/upload-adoption-animal")} // Navigate to Add Animal page
