@@ -6,7 +6,6 @@ import { useAuth } from "react-oidc-context";
 
 const AdoptionAnimals = () => {
   const auth = useAuth();
-  const isAdmin = auth.user?.profile?.["cognito:groups"]?.includes("Admin");
   const [isLoading, setIsLoading] = useState(true);
 
   const [animals, setAnimals] = useState([]);

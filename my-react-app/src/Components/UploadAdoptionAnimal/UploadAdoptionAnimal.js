@@ -173,7 +173,7 @@ const UploadAdoptionAnimal = () => {
           species,
           breed,
           about,
-          contactDetails: `${regionCode} ${contact}`,
+          contactDetails: `+${regionCode} ${contact}`,
           gender,
           neuterStatus: neuterStatus === "true",
           vaccinationStatus: vaccinationStatus === "true",
